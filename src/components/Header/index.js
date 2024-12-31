@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from 'lucide-react'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
+import { useClerk, useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+import { login, logout } from '@/app/Slices/AuthSlice'
 
 const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
     <>
@@ -17,24 +19,41 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
             <Link href={authStatus ? "/Jobs" : "/sign-in"}>{authStatus ? "Jobs" : "Sign In"}</Link>
         </Button>
         <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={authStatus ? "/Profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Un"}</Link>
+            <Link href={authStatus ? "/Profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
         </Button>
     </>
 )
 
-export default async function Header() {
+export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
-    const userId = useSelector((state) => state.status)
-    const [authStatus, setauthStatus] = useState(false)
+    const authStatus = useSelector((state) => state.auth.status)
+    const { signOut } = useClerk()
+    const { user, isLoaded } = useUser()
+    const router = useRouter()
+    const dispatch = useDispatch()
 
-    if (userId === null) {
-        setauthStatus(false)
-    } else if (userId) {
-        setauthStatus(true)
+    useEffect(() => {
+        if (isLoaded) {
+            if (user) {
+                dispatch(login(user.id))
+            } else {
+                dispatch(logout())
+            }
+        }
+    }, [user, isLoaded, dispatch])
+
+    const handleLogout = async () => {
+        try {
+            await signOut()
+            dispatch(logout())
+            router.push('/sign-in')
+        } catch (error) {
+            console.error('Logout failed:', error)
+        }
     }
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-50 w-full p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-14 items-center">
                 <div className="mr-4 hidden md:flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -67,7 +86,7 @@ export default async function Header() {
                         {/* You can add a search component here if needed */}
                     </div>
                     <nav className="flex items-center">
-                        {/* You can add user-related components here, like a profile dropdown */}
+                        {authStatus && <Button onClick={handleLogout}>Logout</Button>}
                     </nav>
                 </div>
             </div>
