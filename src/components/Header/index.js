@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useClerk, useUser } from '@clerk/nextjs'
+import { useClerk, UserButton, useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { login, logout } from '@/app/Slices/AuthSlice'
+import Image from 'next/image'
+
 
 const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
     <>
@@ -58,7 +60,12 @@ export default function Header() {
                 <div className="mr-4 hidden md:flex">
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block">
-                            YourLogo
+                            <Image
+                                src={"/images/next.svg"}
+                                alt=" Logo"
+                                width={100}
+                                height={100}
+                            />
                         </span>
                     </Link>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
@@ -86,7 +93,26 @@ export default function Header() {
                         {/* You can add a search component here if needed */}
                     </div>
                     <nav className="flex items-center">
-                        {authStatus && <Button onClick={handleLogout}>Logout</Button>}
+                        {authStatus &&
+                            <UserButton
+                                afterSignOutUrl="/sign-in"
+                                appearance={{
+                                    elements: {
+                                        avatarBox: {
+                                            width: 40,
+                                            height: 40,
+                                        },
+                                    },
+                                }}
+                                userProfileMode="navigation"
+                                userProfileUrl="/user-profile"
+                                onSignOutClick={(e) => {
+                                    e.preventDefault()
+                                    handleLogout()
+                                }}
+                            />
+
+                        }
                     </nav>
                 </div>
             </div>
