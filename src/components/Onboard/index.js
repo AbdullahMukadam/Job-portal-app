@@ -34,19 +34,67 @@ export default function OnBoardComponent() {
                         <Card>
 
                             <CardHeader>
-                                <CardTitle>Account</CardTitle>
+                                <CardTitle>Details</CardTitle>
                                 <CardDescription>
                                     Make changes to your account here. Click save when you're done.
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <div className="space-y-1">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input id="name" defaultValue="Pedro Duarte" />
+                            <div className="space-y-1">
+                                    <Label htmlFor="Resume">Resume</Label>
+                                    <Input id="Resume" defaultValue="" type="file"/>
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="username">Username</Label>
-                                    <Input id="username" defaultValue="@peduarte" />
+                                    <Label htmlFor="name">Name</Label>
+                                    <Input id="name" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="current">Current Job location</Label>
+                                    <Input id="current" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="prefered">Prefered Job location</Label>
+                                    <Input id="prefered" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="salary">Current Salary</Label>
+                                    <Input id="salary" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Notice">Notice Period</Label>
+                                    <Input id="Notice" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Skills">Skills</Label>
+                                    <Input id="Skills" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Company">Current Company</Label>
+                                    <Input id="Company" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Previous">Previous Company</Label>
+                                    <Input id="Previous" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Experience">Total Experience </Label>
+                                    <Input id="Experience" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="college">college </Label>
+                                    <Input id="college" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Graduated">Graduated Year </Label>
+                                    <Input id="Graduated" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="LinkedIn">LinkedIn Profile</Label>
+                                    <Input id="LinkedIn" defaultValue="" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="Github">Github Profile</Label>
+                                    <Input id="Github" defaultValue="" />
                                 </div>
                             </CardContent>
                             <CardFooter>
@@ -57,23 +105,27 @@ export default function OnBoardComponent() {
                     <TabsContent value="recruiter">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Password</CardTitle>
+                                <CardTitle>Details</CardTitle>
                                 <CardDescription>
-                                    Change your password here. After saving, you'll be logged out.
+                                    Enter Your Details here
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <Label htmlFor="current">Current password</Label>
-                                    <Input id="current" type="password" />
+                                    <Label htmlFor="current">Your Name</Label>
+                                    <Input id="current" type="text" />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="new">New password</Label>
-                                    <Input id="new" type="password" />
+                                    <Label htmlFor="new">Your Company Name</Label>
+                                    <Input id="new" type="text" />
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="next">Your Role at Your Company</Label>
+                                    <Input id="next" type="text" />
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button>Save password</Button>
+                                <Button>Save Details</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>

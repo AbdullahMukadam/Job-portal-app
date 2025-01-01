@@ -23,6 +23,9 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
         <Button variant="ghost" className={className} onClick={onClick}>
             <Link href={authStatus ? "/Profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
         </Button>
+        {authStatus && <Button variant="ghost" className={className} onClick={onClick}>
+            <Link href={"/Membership"}> Membership</Link>
+        </Button>}
     </>
 )
 
@@ -105,7 +108,7 @@ export default function Header() {
                                     },
                                 }}
                                 userProfileMode="navigation"
-                                userProfileUrl="/user-profile"
+                                userProfileUrl="/Profile"
                                 onSignOutClick={(e) => {
                                     e.preventDefault()
                                     handleLogout()
