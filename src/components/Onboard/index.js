@@ -20,24 +20,41 @@ import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { toast } from '@/hooks/use-toast'
 import { submitRecruiterDetails } from '@/app/actions/detailsActions'
+import { useSelector } from 'react-redux'
+import { useUser } from '@clerk/nextjs'
 
 export default function OnBoardComponent() {
     const { register, handleSubmit, reset, formState: { isSubmitting, errors } } = useForm()
     const [errorss, setErrors] = useState("")
-    
+    const  userId  = useSelector((state) => state.auth.userId)
+    const { user } = useUser()
 
-    const RecruiterDetails =async (data) => {
+
+
+    const RecruiterDetails = async (data) => {
         try {
             setErrors("")
 
-            const response = await submitRecruiterDetails(data)
-            if(response.success){
+            const formData = {
+                userId,
+                email: user?.primaryEmailAddress?.emailAddress,
+                isPremiumUser: false,
+                role: "recruiter",
+                RecruiterInfo: {
+                    name: data.name,
+                    companyName: data.companyName,
+                    companyRole: data.companyRole
+                }
+            }
+
+            const response = await submitRecruiterDetails(formData, "/onBoard")
+            if (response.success) {
                 reset()
                 toast({
                     title: "Succesfull",
                     description: "Details has been succefully send"
                 })
-                
+
             }
 
         } catch (error) {

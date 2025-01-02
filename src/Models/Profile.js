@@ -5,6 +5,10 @@ const ProfileSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    role: {
+        required: true,
+        type: String
+    },
     email: {
         required: true,
         type: String
@@ -34,7 +38,7 @@ const ProfileSchema = new mongoose.Schema({
             required: true,
             type: String
         },
-        companyRole : {
+        companyRole: {
             required: true,
             type: String
         }
@@ -52,47 +56,47 @@ const ProfileSchema = new mongoose.Schema({
             required: true,
             type: String
         },
-        PreferedJobLocation : {
+        PreferedJobLocation: {
             required: true,
             type: String
         },
-        CurrentSalary : {
+        CurrentSalary: {
             required: true,
             type: String
         },
-        NoticePeriod : {
+        NoticePeriod: {
             required: true,
             type: String
         },
-        Skills : {
+        Skills: {
             required: true,
             type: String
         },
-        CurrentCompany : {
+        CurrentCompany: {
             required: true,
             type: String
         },
-        PreviousCompany : {
+        PreviousCompany: {
             required: true,
             type: String
         },
-        TotalExperience : {
+        TotalExperience: {
             required: true,
             type: Boolean
         },
-        College : {
+        College: {
             required: true,
             type: String
         },
-        GraduatedYear : {
+        GraduatedYear: {
             required: true,
             type: Boolean
         },
-        LinkedInProfile : {
+        LinkedInProfile: {
             required: true,
             type: String
         },
-        GithubProfile : {
+        GithubProfile: {
             required: true,
             type: String
         },
