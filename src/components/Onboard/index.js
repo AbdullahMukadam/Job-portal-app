@@ -26,7 +26,7 @@ import { useUser } from '@clerk/nextjs'
 export default function OnBoardComponent() {
     const { register, handleSubmit, reset, formState: { isSubmitting, errors } } = useForm()
     const [errorss, setErrors] = useState("")
-    const  userId  = useSelector((state) => state.auth.userId)
+    const userId = useSelector((state) => state.auth.userId)
     const { user } = useUser()
 
 
@@ -38,7 +38,6 @@ export default function OnBoardComponent() {
             const formData = {
                 userId,
                 email: user?.primaryEmailAddress?.emailAddress,
-                isPremiumUser: false,
                 role: "recruiter",
                 RecruiterInfo: {
                     name: data.name,
@@ -47,15 +46,8 @@ export default function OnBoardComponent() {
                 }
             }
 
-            const response = await submitRecruiterDetails(formData, "/onBoard")
-            if (response.success) {
-                reset()
-                toast({
-                    title: "Succesfull",
-                    description: "Details has been succefully send"
-                })
-
-            }
+            await submitRecruiterDetails(formData, "/onBoard")
+            reset()
 
         } catch (error) {
             toast({

@@ -5,12 +5,14 @@ import { useDispatch } from 'react-redux'
 
 export default function AfterLogin({ userId }) {
     const dispatch = useDispatch()
-    
+
     useEffect(() => {
         if (userId) {
             dispatch(login(userId))
         }
     }, [userId, dispatch])
 
-    return null
+    return (
+        <div>This is After Login Page</div>
+    )
 }

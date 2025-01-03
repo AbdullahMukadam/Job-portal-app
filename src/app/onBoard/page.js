@@ -13,11 +13,10 @@ export default async function onBoard() {
     if (getProfileDetails?.role === "recruiter" && !getProfileDetails?.isPremiumUser) redirect("/Membership")
     else redirect("/")
   } else {
-    return (
-      <div className='w-full h-full p-2'>
-        <OnBoardComponent />
-      </div>
-    )
+    return <div className='w-full h-full p-2'>
+      <OnBoardComponent />
+    </div>
+
   }
 
 

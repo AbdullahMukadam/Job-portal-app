@@ -15,93 +15,110 @@ const ProfileSchema = new mongoose.Schema({
     },
     isPremiumUser: {
         required: true,
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     membershipType: {
-        required: true,
-        type: String
+        type: String,
+        default: 'free'
     },
     membershipstartDate: {
-        required: true,
-        type: String
+        type: String,
+        default: () => new Date().toISOString()
     },
     membershipendDate: {
-        required: true,
-        type: String
-    },
-    RecruiterInfo: {
-        name: {
-            required: true,
-            type: String
-        },
-        companyName: {
-            required: true,
-            type: String
-        },
-        companyRole: {
-            required: true,
-            type: String
+        type: String,
+        default: () => {
+            const date = new Date();
+            date.setFullYear(date.getFullYear() + 1);
+            return date.toISOString();
         }
     },
-    CandidateInfo: {
-        resume: {
-            required: true,
-            type: String
+    RecruiterInfo: {
+        required: function() {
+            return this.role === 'recruiter';
         },
-        name: {
-            required: true,
-            type: String
+        type: {
+            name: {
+                type: String,
+                required: true
+            },
+            companyName: {
+                type: String,
+                required: true
+            },
+            companyRole: {
+                type: String,
+                required: true
+            }
         },
-        CurrentJobLocation: {
-            required: true,
-            type: String
-        },
-        PreferedJobLocation: {
-            required: true,
-            type: String
-        },
-        CurrentSalary: {
-            required: true,
-            type: String
-        },
-        NoticePeriod: {
-            required: true,
-            type: String
-        },
-        Skills: {
-            required: true,
-            type: String
-        },
-        CurrentCompany: {
-            required: true,
-            type: String
-        },
-        PreviousCompany: {
-            required: true,
-            type: String
-        },
-        TotalExperience: {
-            required: true,
-            type: Boolean
-        },
-        College: {
-            required: true,
-            type: String
-        },
-        GraduatedYear: {
-            required: true,
-            type: Boolean
-        },
-        LinkedInProfile: {
-            required: true,
-            type: String
-        },
-        GithubProfile: {
-            required: true,
-            type: String
-        },
+        _id: false
     },
-})
+    CandidateInfo: {
+        required: function() {
+            return this.role === 'candidate';
+        },
+        type: {
+            resume: {
+                type: String,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            CurrentJobLocation: {
+                type: String,
+                required: true
+            },
+            PreferedJobLocation: {
+                type: String,
+                required: true
+            },
+            CurrentSalary: {
+                type: String,
+                required: true
+            },
+            NoticePeriod: {
+                type: String,
+                required: true
+            },
+            Skills: {
+                type: String,
+                required: true
+            },
+            CurrentCompany: {
+                type: String,
+                required: true
+            },
+            PreviousCompany: {
+                type: String,
+                required: true
+            },
+            TotalExperience: {
+                type: Boolean,
+                required: true
+            },
+            College: {
+                type: String,
+                required: true
+            },
+            GraduatedYear: {
+                type: Boolean,
+                required: true
+            },
+            LinkedInProfile: {
+                type: String,
+                required: true
+            },
+            GithubProfile: {
+                type: String,
+                required: true
+            }
+        },
+        _id: false
+    }
+});
 
-const Profile = mongoose.models.Profile || mongoose.model("Profile", ProfileSchema)
-export default Profile
+const Profile = mongoose.models.Profile || mongoose.model("Profile", ProfileSchema);
+export default Profile;

@@ -1,29 +1,18 @@
 import AfterLogin from '@/components/AfterLogin';
 import { auth, currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation';
+import { fetchUserDetails } from './actions/detailsActions';
 
-async function getProfileDetails(userId) {
-  try {
-   /*  // Replace with your actual API endpoint
-    const response = await fetch(`/api/profile/${userId}`, {
-      cache: 'no-store'
-    });
-    return response.ok ? await response.json() : null; */
-  } catch (error) {
-    console.error('Error fetching profile:', error);
-    return null;
-  }
-}
 
 export default async function Home() {
   const { userId } = await auth();
 
   if (userId) {
     const user = await currentUser();
-    const profileDetails = await getProfileDetails(userId);
+    const profileDetails = await fetchUserDetails(userId);
 
     
-    if (user && !profileDetails) {
+    if (user && !profileDetails?._id) {
       redirect("/onBoard");
     }
   }
