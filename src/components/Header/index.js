@@ -12,7 +12,7 @@ import { login, logout } from '@/app/Slices/AuthSlice'
 import Image from 'next/image'
 
 
-const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
+const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails }) => (
     <>
         <Button variant="ghost" className={className} onClick={onClick}>
             <Link href="/">Home</Link>
@@ -23,13 +23,16 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus }) => (
         <Button variant="ghost" className={className} onClick={onClick}>
             <Link href={authStatus ? "/Profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
         </Button>
+        {userDetails?.role === "candidate" && <Button variant="ghost" className={className} onClick={onClick}>
+            <Link href={"/activity"}>Activity</Link>
+        </Button>}
         {authStatus && <Button variant="ghost" className={className} onClick={onClick}>
             <Link href={"/Membership"}> Membership</Link>
         </Button>}
     </>
 )
 
-export default function Header() {
+export default function Header({ userDetails }) {
     const [isOpen, setIsOpen] = useState(false)
     const authStatus = useSelector((state) => state.auth.status)
     const { signOut } = useClerk()
@@ -72,7 +75,7 @@ export default function Header() {
                         </span>
                     </Link>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
-                        <NavItems authStatus={authStatus} />
+                        <NavItems authStatus={authStatus} userDetails={userDetails} />
                     </nav>
                 </div>
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -87,7 +90,7 @@ export default function Header() {
                     </SheetTrigger>
                     <SheetContent side="left" className="pr-0">
                         <nav className="flex flex-col space-y-4">
-                            <NavItems className="w-full justify-start" onClick={() => setIsOpen(false)} authStatus={authStatus} />
+                            <NavItems className="w-full justify-start" onClick={() => setIsOpen(false)} authStatus={authStatus} userDetails={userDetails} />
                         </nav>
                     </SheetContent>
                 </Sheet>
