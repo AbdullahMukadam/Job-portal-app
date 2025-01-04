@@ -18,16 +18,18 @@ import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
-import { toast } from '@/hooks/use-toast'
+import {  useToast } from '@/hooks/use-toast'
 import { submitRecruiterDetails } from '@/app/actions/detailsActions'
 import { useSelector } from 'react-redux'
 import { useUser } from '@clerk/nextjs'
+import { Toaster } from '../ui/toaster'
 
 export default function OnBoardComponent() {
     const { register, handleSubmit, reset, formState: { isSubmitting, errors } } = useForm()
     const [errorss, setErrors] = useState("")
     const userId = useSelector((state) => state.auth.userId)
     const { user } = useUser()
+    const {toast} = useToast()
 
 
 
@@ -48,6 +50,10 @@ export default function OnBoardComponent() {
 
             await submitRecruiterDetails(formData, "/onBoard")
             reset()
+            toast({
+                title: "Added Details",
+                description: "Details Added Successfully"
+            })
 
         } catch (error) {
             toast({
@@ -220,6 +226,7 @@ export default function OnBoardComponent() {
 
                 </div>
             </Tabs>
+            <Toaster />
         </div>
     )
 }

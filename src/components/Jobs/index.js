@@ -9,7 +9,7 @@ export default function JobsComponent({ profileDetails }) {
                     <h1 className='text-3xl font-bold'>{profileDetails?.role === "candidate" ? "Explore All Jobs" : "Jobs Dashboard"}</h1>
                 </div>
                 <div className='w-[50%] p-1 flex justify-end'>
-                    {profileDetails?.role === "candidate" ? <p>Filter</p> : <PostNewJob />}
+                    {profileDetails?.role === "candidate" ? <p>Filter</p> : <PostNewJob profileDetails={profileDetails} />}
                 </div>
             </div>
             <div className='w-full h-full p-1'>
