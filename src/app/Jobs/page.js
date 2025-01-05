@@ -8,7 +8,7 @@ export default async function JobsPage() {
     const { userId } = await auth()
 
     const profileDetails = await fetchUserDetails(userId)
-    console.log(userId)
+    //console.log(userId)
 
     return (
         <div className='w-full h-full p-2'>

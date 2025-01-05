@@ -7,37 +7,16 @@ const MONGODB_URI = process.env.MONGO_URI;
 
 
 
-let cached = global.mongoose;
-
-if (!cached) {
-    cached = global.mongoose = { conn: null, promise: null };
-}
-
-async function ConnectToDb() {
-    if (cached.conn) {
-        return cached.conn;
-    }
-
-    if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-            return mongoose;
-        });
-    }
-
+const ConnectToDb = async () => {
     try {
-        cached.conn = await cached.promise;
-    } catch (e) {
-        cached.promise = null;
-        throw e;
+        const res = await mongoose.connect(MONGODB_URI)
+        if (res) {
+            console.log("connected Sucessfully")
+        }
+    } catch (error) {
+        console.log("error in connecting to database", error)
     }
-
-    return cached.conn;
 }
-
 
 
 

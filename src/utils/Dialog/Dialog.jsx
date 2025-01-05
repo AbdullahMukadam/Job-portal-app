@@ -25,40 +25,53 @@ export function DialogDemo({ profileDetails }) {
       CompanyName: profileDetails?.RecruiterInfo?.companyName || "",
     }
   });
-  // console.log(profileDetails)
+
   const { toast } = useToast()
 
   const submitHandler = async (data) => {
     try {
-      const formData = {
-        CompanyName : data?.CompanyName,
-        type : data?.type,
-        title : data?.title,
-        location : data?.location,
-        description : data?.description,
-        skills : data?.skills,
-        recruiterId : profileDetails?.userId,
-        applicants : []
+      if (!profileDetails?.userId) {
+        toast({
+          title: "Error",
+          description: "Recruiter ID is required.",
+          variant: "destructive",
+        });
+        return;
       }
-      const response = await createJobAction(formData, "/Jobs")
+
+      
+      const formData = {
+        CompanyName: data.CompanyName,
+        type: data.type,
+        title: data.title,
+        location: data.location,
+        description: data.description,
+        skills: data.skills,
+        recruiterId: profileDetails.userId,
+      };
+
+      const response = await createJobAction(formData, "/Jobs");
+
       if (response.success) {
         toast({
-          title: "Job Posted",
-          description: "Your job has been successfully posted.",
-        })
-        setIsOpen(false)
-        reset()
+          title: "Success",
+          description: response.message,
+        });
+        setIsOpen(false);
+        reset();
+      } else {
+        throw new Error(response.message);
       }
 
     } catch (error) {
-      console.error("Error in submitting Job:", error)
+      console.error("Error in submitting Job:", error);
       toast({
         title: "Error",
-        description: "There was an error posting your job. Please try again.",
+        description: error.message || "There was an error posting your job. Please try again.",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   return (
     <>
