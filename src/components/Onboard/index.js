@@ -19,10 +19,11 @@ import { Label } from '../ui/label'
 import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/hooks/use-toast'
-import { submitRecruiterDetails } from '@/app/actions/detailsActions'
+import { submitCandidateDetails, submitRecruiterDetails } from '@/app/actions/detailsActions'
 import { useSelector } from 'react-redux'
 import { useUser } from '@clerk/nextjs'
 import { Toaster } from '../ui/toaster'
+import { createClient } from '@supabase/supabase-js'
 
 export default function OnBoardComponent() {
     const { register: registerCandidate, handleSubmit: handleSubmitCandidate, reset: resetCandidate, formState: { isSubmitting: isSubmittingCandidate, errors: errorsCandidate } } = useForm()
@@ -31,7 +32,7 @@ export default function OnBoardComponent() {
     const userId = useSelector((state) => state.auth.userId)
     const { user } = useUser()
     const { toast } = useToast()
-
+    const SupabaseClient = createClient("https://pufnqviswcgxajjpucmr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Zm5xdmlzd2NneGFqanB1Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjczMDAsImV4cCI6MjA1MTc0MzMwMH0.h0hrZ33R2iz06Cg13NgHvmvUr8AexEeWeo_LBBNd8lk")
 
 
     const RecruiterDetails = async (data) => {
@@ -65,17 +66,72 @@ export default function OnBoardComponent() {
         }
     }
 
+    const UploadFileToSupabase = async (file) => {
+        const { data, error } = await SupabaseClient.storage.from("job-board").upload(`/public/${file.name}`, file, {
+            cacheControl: "3600",
+            upsert: false
+        })
+        if (error) {
+            console.log("Error in File Uploading", error)
+        } else {
+            return data.path
+        }
+    }
+
+    const DeleteFileFromSupabase = async (file) => {
+        try {
+            await SupabaseClient.storage.from("job-board").remove(`/public/${file.name}`)
+        } catch (error) {
+            console.log("Error in Deleting File", error)
+        }
+
+    }
+
     const CandidateSubmit = async (data) => {
         try {
             setErrors("")
-            console.log(data)
-            // Implement your candidate submission logic here
-            resetCandidate()
-            toast({
-                title: "Added Details",
-                description: "Candidate Details Added Successfully"
-            })
+            //console.log(data.resume[0])
+            const filePath = await UploadFileToSupabase(data.resume[0])
+            if (filePath) {
+                console.log(filePath)
+                const formData = {
+                    userId,
+                    email: user?.primaryEmailAddress?.emailAddress,
+                    role: "candidate",
+                    CandidateInfo: {
+                        resume: filePath,
+                        Name: data.Name,
+                        CurrentJobLocation: data.CurrentJobLocation,
+                        PreferedJobLocation: data.PreferedJobLocation,
+                        CurrentSalary: data.CurrentSalary,
+                        NoticePeriod: data.NoticePeriod,
+                        Skills: data.Skills,
+                        CurrentCompany: data.CurrentCompany,
+                        PreviousCompany: data.PreviousCompany,
+                        TotalExperience: Number(data.TotalExperience),
+                        College: data.College,
+                        GraduatedYear: Number(data.GraduatedYear),
+                        LinkedInProfile: data.LinkedInProfile,
+                        GithubProfile: data.GithubProfile
+                    }
+                }
+
+                await submitCandidateDetails(formData, "/onBoard")
+
+                resetCandidate()
+                toast({
+                    title: "Added Details",
+                    description: "Candidate Details Added Successfully"
+                })
+            } else {
+                toast({
+                    title: "Error",
+                    description: "Resume Haven't uploaded Yet, please try again"
+                })
+            }
+
         } catch (error) {
+            await DeleteFileFromSupabase(data.resume[0])
             toast({
                 title: "Error",
                 description: "An Error occurred in sending details"
@@ -221,6 +277,7 @@ export default function OnBoardComponent() {
                                                 required: "Please Enter the Information"
                                             })}
                                             className={registerCandidate.TotalExperience ? "border-red-500" : ""}
+                                            type="number"
                                         />
                                         {registerCandidate.TotalExperience && (
                                             <p className="text-sm text-red-500">{registerCandidate.TotalExperience.message}</p>
@@ -245,6 +302,7 @@ export default function OnBoardComponent() {
                                                 required: "Please Enter the Information"
                                             })}
                                             className={registerCandidate.GraduatedYear ? "border-red-500" : ""}
+                                            type="number"
                                         />
                                         {registerCandidate.GraduatedYear && (
                                             <p className="text-sm text-red-500">{registerCandidate.GraduatedYear.message}</p>

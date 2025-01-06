@@ -25,5 +25,16 @@ export async function fetchUserDetails(id) {
 }
 
 export async function submitCandidateDetails(data, pathToRevalidate) {
+    await ConnectToDb();
+    const formattedData = {
+        ...data,
+        membershipType: data.membershipType || 'free',
+        membershipstartDate: data.membershipstartDate || new Date().toISOString(),
+        membershipendDate: data.membershipendDate || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+        isPremiumUser: data.isPremiumUser || false
+    };
+    await Profile.create(formattedData);
+    revalidatePath(pathToRevalidate);
+
 
 }

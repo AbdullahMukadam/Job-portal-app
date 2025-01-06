@@ -96,7 +96,7 @@ const ProfileSchema = new mongoose.Schema({
                 required: true
             },
             TotalExperience: {
-                type: Boolean,
+                type: Number,
                 required: true
             },
             College: {
@@ -104,7 +104,7 @@ const ProfileSchema = new mongoose.Schema({
                 required: true
             },
             GraduatedYear: {
-                type: Boolean,
+                type: Number,
                 required: true
             },
             LinkedInProfile: {
