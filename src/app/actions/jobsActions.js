@@ -8,18 +8,14 @@ export async function createJobAction(formData, pathToRevalidate) {
     try {
         await ConnectToDb();
 
-        const requiredFields = ['CompanyName', 'type', 'title', 'location', 'description', 'skills', 'recruiterId'];
-
-        for (const field of requiredFields) {
-            if (!formData[field]) {
-                return {
-                    success: false,
-                    message: `${field} is required`
-                };
+        if (!formData) {
+            return {
+                success: false,
+                message: "Form Data Not Received"
             }
         }
 
-       
+
         const jobData = {
             CompanyName: String(formData.CompanyName),
             type: String(formData.type),
