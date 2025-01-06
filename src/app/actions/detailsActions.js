@@ -20,6 +20,10 @@ export async function submitRecruiterDetails(data, pathToRevalidate) {
 export async function fetchUserDetails(id) {
     await ConnectToDb();
     const result = await Profile.findOne({ userId: id });
-  
+
     return JSON.parse(JSON.stringify(result));
+}
+
+export async function submitCandidateDetails(data, pathToRevalidate) {
+
 }
