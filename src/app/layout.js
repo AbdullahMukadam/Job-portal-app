@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
         >
           <Suspense fallback={<SkeletonDemo />}>
             <CommonLayout>

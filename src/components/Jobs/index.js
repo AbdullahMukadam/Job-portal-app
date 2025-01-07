@@ -1,9 +1,13 @@
 import React from 'react'
 import PostNewJob from './PostNewJob'
 import JobListing from './Joblisting'
+import JobListingCandidate from './JobListingCandidate'
+
 
 export default function JobsComponent({ profileDetails, recruiterJobs }) {
-    const jobList = recruiterJobs.jobs || []
+    const jobList = recruiterJobs?.jobs || []
+    //console.log(profileDetails)
+    
 
     return (
         <div className='w-full h-full p-4'>
@@ -27,13 +31,16 @@ export default function JobsComponent({ profileDetails, recruiterJobs }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {jobList.map((jobItem) => (
                             profileDetails?.role === "candidate" ? (
-                                <p>Candidate Job List</p>
+                                <JobListingCandidate
+                                    key={jobItem._id}
+                                    profileDetails={JSON.parse(JSON.stringify(profileDetails))}
+                                    job={jobItem}
+                                />
                             ) : (
                                 <JobListing
                                     key={jobItem._id}
-                                    profileDetails={profileDetails}
+                                    profileDetails={JSON.parse(JSON.stringify(profileDetails))}
                                     job={jobItem}
-
                                 />
                             )
                         ))}

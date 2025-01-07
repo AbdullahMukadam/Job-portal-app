@@ -48,7 +48,7 @@ export default function JobListing({ job }) {
             <Trash2 className="mr-2 h-3 w-3" />
             Delete
           </Button>
-          <Button>Apply Now</Button>
+          
         </div>
       </CardFooter>
     </Card>

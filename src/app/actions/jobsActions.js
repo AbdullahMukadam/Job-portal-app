@@ -56,7 +56,8 @@ export async function fetchJobPostForRecruiter(id) {
         if (!id) {
             return {
                 success: false,
-                message: 'Recruiter ID is required'
+                message: 'Recruiter ID is required',
+                jobs: []
             };
         }
 
@@ -72,10 +73,24 @@ export async function fetchJobPostForRecruiter(id) {
             };
         }
 
+        const serializedJobs = jobs.map(job => ({
+            _id: job._id.toString(),
+            CompanyName: job.CompanyName,
+            type: job.type,
+            title: job.title,
+            location: job.location,
+            description: job.description,
+            skills: job.skills,
+            recruiterId: job.recruiterId,
+            applicants: job.applicants,
+            createdAt: job.createdAt.toISOString(),
+            updatedAt: job.updatedAt.toISOString()
+        }));
+
         return {
             success: true,
             message: 'Jobs fetched successfully',
-            jobs: jobs
+            jobs: serializedJobs
         };
 
     } catch (error) {
@@ -84,6 +99,76 @@ export async function fetchJobPostForRecruiter(id) {
             success: false,
             message: error.message || 'An error occurred while fetching jobs',
             jobs: []
+        };
+    }
+}
+
+export async function fetchJobPostForCandidate() {
+    try {
+        await ConnectToDb()
+
+        const jobs = await Job.find({}).lean()
+        if (jobs) {
+            const serializedJobs = jobs.map(job => ({
+                _id: job._id.toString(),
+                CompanyName: job.CompanyName,
+                type: job.type,
+                title: job.title,
+                location: job.location,
+                description: job.description,
+                skills: job.skills,
+                recruiterId: job.recruiterId,
+                applicants: job.applicants,
+                createdAt: job.createdAt.toISOString(),
+                updatedAt: job.updatedAt.toISOString()
+            }))
+            
+            return {
+                success: true,
+                message: 'Jobs fetched successfully',
+                jobs: serializedJobs
+            };
+        }
+    } catch (error) {
+        console.error('Error in fetchJobPostForCandidate:', error);
+        return {
+            success: false,
+            message: error.message || 'An error occurred while fetching jobs',
+            jobs: []
+        };
+    }
+}
+
+export async function JobApplicantApply(jobId, applicantData, pathToRevalidate) {
+    try {
+        if (!jobId || !applicantData) {
+            return {
+                success: false,
+                message: 'An error occurred while Applying to Job',
+            };
+        }
+
+        const job = await Job.findByIdAndUpdate(
+            jobId,
+            {
+                $push: {
+                    applicants: { applicantData }
+                }
+            }, { new: true }
+        )
+        if (job) {
+            console.log(job)
+            revalidatePath(pathToRevalidate)
+            return {
+                success: true,
+                message: 'Succefully Applied to Job',
+            };
+        }
+    } catch (error) {
+        console.error('Error in JobApplicantApply:', error);
+        return {
+            success: false,
+            message: error.message || 'An error occurred while Applying to Job',
         };
     }
 }
