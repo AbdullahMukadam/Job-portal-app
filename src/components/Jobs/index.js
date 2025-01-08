@@ -1,13 +1,17 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import PostNewJob from './PostNewJob'
 import JobListing from './Joblisting'
 import JobListingCandidate from './JobListingCandidate'
+import { DrawerDemo } from '@/utils/Drawer/Drawer'
 
 
 export default function JobsComponent({ profileDetails, recruiterJobs }) {
     const jobList = recruiterJobs?.jobs || []
     //console.log(profileDetails)
-    
+    const [drawerOpen, setDrawerOpen] = useState(false)
+
+
 
     return (
         <div className='w-full h-full p-4'>
@@ -35,12 +39,15 @@ export default function JobsComponent({ profileDetails, recruiterJobs }) {
                                     key={jobItem._id}
                                     profileDetails={JSON.parse(JSON.stringify(profileDetails))}
                                     job={jobItem}
+
                                 />
                             ) : (
                                 <JobListing
                                     key={jobItem._id}
                                     profileDetails={JSON.parse(JSON.stringify(profileDetails))}
                                     job={jobItem}
+                                    setDrawerOpen={setDrawerOpen}
+                                    drawerOpen={drawerOpen}
                                 />
                             )
                         ))}
@@ -49,6 +56,7 @@ export default function JobsComponent({ profileDetails, recruiterJobs }) {
                     <p className="text-center text-gray-500 text-lg">No jobs found.</p>
                 )}
             </div>
+            <DrawerDemo setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} job={jobList} />
         </div>
     )
 }

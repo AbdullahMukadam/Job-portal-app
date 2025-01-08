@@ -67,7 +67,7 @@ export default function OnBoardComponent() {
     }
 
     const UploadFileToSupabase = async (file) => {
-        const { data, error } = await SupabaseClient.storage.from("job-board").upload(`/public/${file.name}`, file, {
+        const { data, error } = await SupabaseClient.storage.from("job-board-public").upload(`/public/${file.name}`, file, {
             cacheControl: "3600",
             upsert: false
         })
@@ -80,7 +80,7 @@ export default function OnBoardComponent() {
 
     const DeleteFileFromSupabase = async (file) => {
         try {
-            await SupabaseClient.storage.from("job-board").remove(`/public/${file.name}`)
+            await SupabaseClient.storage.from("job-board-public").remove(`/public/${file.name}`)
         } catch (error) {
             console.log("Error in Deleting File", error)
         }

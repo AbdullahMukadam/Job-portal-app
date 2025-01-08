@@ -123,7 +123,7 @@ export default function JobListingCandidate({ job, profileDetails }) {
                             Applying...
                         </span>
                     ) : (
-                        "Apply Now"
+                        appliedStatus ? "Applied" : "Apply Now"
                     )}
                 </Button>
             </CardFooter>
