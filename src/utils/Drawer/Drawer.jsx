@@ -22,9 +22,24 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { fetchUserDetails } from "@/app/actions/detailsActions"
+import Link from "next/link"
+
 
 
 export function DrawerDemo({ drawerOpen, setDrawerOpen, job }) {
+    
+
+    /* const handleRedirectToUrl = async (userId) => {
+        try {
+            const response = await fetchUserDetails(userId)
+            if (response) {
+                
+            }
+        } catch (error) {
+            console.log("An Error Occured In Fetching Details Of User", error)
+        }
+    } */
 
 
     return (
@@ -35,7 +50,7 @@ export function DrawerDemo({ drawerOpen, setDrawerOpen, job }) {
                         <DrawerTitle>Applicants Information</DrawerTitle>
                     </DrawerHeader>
                     <div className="p-4 pb-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {job?.length > 0 ? (
+                        {job[0].applicants.length > 0 ? (
                             job?.map((jobApplicants) => (
                                 jobApplicants.applicants.map((applicant) => (
                                     <Card key={applicant.applicantData.userId}>
@@ -46,14 +61,20 @@ export function DrawerDemo({ drawerOpen, setDrawerOpen, job }) {
                                         <CardContent className="w-full p-1">
                                             <div className="w-full p-2 flex items-center justify-between">
                                                 <h2 className="text-bold">{applicant.applicantData.email}</h2>
-                                                <Button>View Profile</Button>
+                                                <Link href={`/Profile/${applicant.applicantData.userId}`} >View Profile</Link>
                                             </div>
                                         </CardContent>
 
                                     </Card>
                                 ))
                             ))
-                        ) : <p className="text-sm text-slate-800">No One Has To this Job</p>}
+                        ) : (
+                            <div className="w-full p-2">
+                                <h1 className="text-red-400 text-lg">No One Has Applied To this Job.</h1>
+                            </div>
+
+
+                        )}
 
                     </div>
                     <DrawerFooter className={" flex items-center justify-center"}>
