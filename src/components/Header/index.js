@@ -21,7 +21,7 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails
             <Link href={authStatus ? "/Jobs" : "/sign-in"}>{authStatus ? "Jobs" : "Sign In"}</Link>
         </Button>
         <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={authStatus ? "/Profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
+            <Link href={authStatus ? "/user-profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
         </Button>
         {userDetails?.role === "candidate" && <Button variant="ghost" className={className} onClick={onClick}>
             <Link href={"/activity"}>Activity</Link>
