@@ -3,6 +3,7 @@
 import ConnectToDb from "@/database"
 import Job from "@/Models/Job"
 import { revalidatePath } from "next/cache"
+import nodemailer from "nodemailer"
 
 export async function createJobAction(formData, pathToRevalidate) {
     try {
@@ -122,7 +123,7 @@ export async function fetchJobPostForCandidate() {
                 createdAt: job.createdAt.toISOString(),
                 updatedAt: job.updatedAt.toISOString()
             }))
-            
+
             return {
                 success: true,
                 message: 'Jobs fetched successfully',
@@ -169,6 +170,43 @@ export async function JobApplicantApply(jobId, applicantData, pathToRevalidate) 
         return {
             success: false,
             message: error.message || 'An error occurred while Applying to Job',
+        };
+    }
+}
+
+export async function SendEmailToCandidate() {
+    try {
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "",
+                pass: ""
+            }
+        })
+
+        const response = await transporter.sendMail({
+            from: "",
+            to: 'your_email@example.com',
+            subject: `New message from `,
+            text: "",
+            html: `<p>You have a new message from ():</p><p></p>`,
+        })
+
+        if (response) {
+            return {
+                success: true,
+                message: "An Mail has been send to user to Inform about the application status"
+            }
+        }
+
+
+
+    } catch (error) {
+        console.error('Error in Sending EMAIL:', error);
+        return {
+            success: false,
+            message: error.message || 'An error occurred while sending the Email',
         };
     }
 }

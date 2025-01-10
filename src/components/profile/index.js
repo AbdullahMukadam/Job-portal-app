@@ -1,17 +1,37 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { GraduationCap, Briefcase, MapPin, Mail, Github, Linkedin } from 'lucide-react'
 import { Button } from '../ui/button'
 import { createClient } from '@supabase/supabase-js'
+import { useSelector } from 'react-redux'
+import { fetchJobPostForRecruiter } from '@/app/actions/jobsActions'
 
 export default function ProfileComponent({ ProfileInfo }) {
   const { CandidateInfo, email, membershipType } = ProfileInfo
-
-
+  const userId = useSelector((state) => state.auth.userId)
+  const [jobDetails, setjobDetails] = useState([])
   const SupabaseClient = createClient("https://pufnqviswcgxajjpucmr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Zm5xdmlzd2NneGFqanB1Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjczMDAsImV4cCI6MjA1MTc0MzMwMH0.h0hrZ33R2iz06Cg13NgHvmvUr8AexEeWeo_LBBNd8lk")
+  //console.log(userId)
+  console.log(ProfileInfo)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const details = await fetchJobPostForRecruiter(userId)
+      if (details.success) {
+        setjobDetails(details.jobs)
+        console.log(jobDetails)
+      } else {
+        console.log("An Error Ocuured in fetching JOB Post")
+      }
+    }
+
+    fetchData()
+
+  }, [userId])
+
 
 
   const handleResumeView = async () => {
@@ -19,11 +39,11 @@ export default function ProfileComponent({ ProfileInfo }) {
     window.open(`${response.publicUrl}`)
   }
 
-  const handleSelectforJob = ()=>{
+  const handleSelectforJob = () => {
 
   }
 
-  const handleRejectforJob = ()=>{
+  const handleRejectforJob = () => {
 
   }
 
