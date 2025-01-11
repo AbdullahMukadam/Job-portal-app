@@ -174,6 +174,42 @@ export async function JobApplicantApply(jobId, applicantData, pathToRevalidate) 
     }
 }
 
+export async function JobApplicationSelectedAction(jobId, userId) {
+    try {
+        await ConnectToDb()
+
+        const newStatus = ["accepted"]
+
+        const job = await Job.findOneAndUpdate(
+            { _id: jobId, "applicants.applicantData.userId": userId },
+            { $set: { "applicants.$.status": newStatus } },
+            { new: true }
+        )
+
+        if (!job) {
+            return {
+                success: false,
+                message: "Job or applicant not found.",
+            };
+        }
+
+        return {
+            success: true,
+            message: "Applicant status updated successfully.",
+            job: job,
+        };
+
+
+
+    } catch (error) {
+        console.error('Error in JobApplicationStatus:', error);
+        return {
+            success: false,
+            message: error.message || 'An error occurred',
+        };
+    }
+}
+
 export async function SendEmailToCandidate() {
     try {
 

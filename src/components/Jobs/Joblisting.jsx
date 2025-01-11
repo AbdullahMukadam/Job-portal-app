@@ -5,8 +5,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Briefcase, Trash2 } from 'lucide-react'
 
-export default function JobListing({ job, setDrawerOpen, drawerOpen }) {
-  
+export default function JobListing({ job, setDrawerOpen, drawerOpen, setjobDetailsForDrawer }) {
+
+  const handleJobDetailsForDrawer = () => {
+    setDrawerOpen(true)
+    setjobDetailsForDrawer(job)
+  }
+
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
@@ -44,7 +49,7 @@ export default function JobListing({ job, setDrawerOpen, drawerOpen }) {
         </div>
       </CardContent>
       <CardFooter className=" flex justify-between items-center">
-        <Button variant="outline" onClick={() => setDrawerOpen(true)}>See Applicants</Button>
+        <Button variant="outline" onClick={handleJobDetailsForDrawer}>See Applicants</Button>
         <div className="space-x-2 flex items-center">
           <Button variant="destructive" >
             <Trash2 className="mr-2 h-3 w-3" />

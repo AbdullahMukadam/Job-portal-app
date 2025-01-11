@@ -1,15 +1,27 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PostNewJob from './PostNewJob'
 import JobListing from './Joblisting'
 import JobListingCandidate from './JobListingCandidate'
 import { DrawerDemo } from '@/utils/Drawer/Drawer'
-
+import { useDispatch } from 'react-redux'
+import { AllJobList } from '@/app/Slices/JobSlice'
+import { RemoveJobList } from '@/app/Slices/JobSlice'
 
 export default function JobsComponent({ profileDetails, recruiterJobs }) {
     const jobList = recruiterJobs?.jobs || []
     //console.log(profileDetails)
     const [drawerOpen, setDrawerOpen] = useState(false)
+    const [jobDetailsForDrawer, setjobDetailsForDrawer] = useState([])
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (jobList) {
+            dispatch(AllJobList(jobList))
+        } else {
+            dispatch(RemoveJobList())
+        }
+    }, [jobList])
 
 
 
@@ -48,6 +60,7 @@ export default function JobsComponent({ profileDetails, recruiterJobs }) {
                                     job={jobItem}
                                     setDrawerOpen={setDrawerOpen}
                                     drawerOpen={drawerOpen}
+                                    setjobDetailsForDrawer={setjobDetailsForDrawer}
                                 />
                             )
                         ))}
@@ -56,7 +69,7 @@ export default function JobsComponent({ profileDetails, recruiterJobs }) {
                     <p className="text-center text-gray-500 text-lg">No jobs found.</p>
                 )}
             </div>
-            <DrawerDemo setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} job={jobList} />
+            <DrawerDemo setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} job={jobDetailsForDrawer} />
         </div>
     )
 }
