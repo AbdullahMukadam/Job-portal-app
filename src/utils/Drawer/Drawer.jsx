@@ -1,6 +1,6 @@
 "use client"; // If this component requires client-side interactivity
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Drawer,
@@ -20,10 +20,21 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { AddSingleJob, RemoveSingleJob } from "@/app/Slices/JobSlice";
 
 export function DrawerDemo({ drawerOpen, setDrawerOpen, job }) {
-    console.log(job)
-    if (!job || !job.applicants) { 
+    //console.log(job)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (job) {
+            dispatch(AddSingleJob(job))
+        } else {
+            dispatch(RemoveSingleJob())
+        }
+    }, [job])
+    if (!job || !job.applicants) {
         return (
             <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                 <DrawerContent>

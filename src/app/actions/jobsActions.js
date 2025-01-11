@@ -16,7 +16,6 @@ export async function createJobAction(formData, pathToRevalidate) {
             }
         }
 
-
         const jobData = {
             CompanyName: String(formData.CompanyName),
             type: String(formData.type),
@@ -182,7 +181,7 @@ export async function JobApplicationSelectedAction(jobId, userId) {
 
         const job = await Job.findOneAndUpdate(
             { _id: jobId, "applicants.applicantData.userId": userId },
-            { $set: { "applicants.$.status": newStatus } },
+            { $set: { "applicants.$.applicantData.status": newStatus } },
             { new: true }
         )
 
@@ -196,7 +195,7 @@ export async function JobApplicationSelectedAction(jobId, userId) {
         return {
             success: true,
             message: "Applicant status updated successfully.",
-            job: job,
+
         };
 
 
@@ -210,39 +209,93 @@ export async function JobApplicationSelectedAction(jobId, userId) {
     }
 }
 
-export async function SendEmailToCandidate() {
+export async function JobApplicationRejectedAction(jobId, userId) {
     try {
+        await ConnectToDb()
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: "",
-                pass: ""
-            }
-        })
+        const newStatus = ["rejected"]
 
-        const response = await transporter.sendMail({
-            from: "",
-            to: 'your_email@example.com',
-            subject: `New message from `,
-            text: "",
-            html: `<p>You have a new message from ():</p><p></p>`,
-        })
+        const job = await Job.findOneAndUpdate(
+            { _id: jobId, "applicants.applicantData.userId": userId },
+            { $set: { "applicants.$.applicantData.status": newStatus } },
+            { new: true }
+        )
 
-        if (response) {
+        if (!job) {
             return {
-                success: true,
-                message: "An Mail has been send to user to Inform about the application status"
-            }
+                success: false,
+                message: "Job or applicant not found.",
+            };
         }
+
+        return {
+            success: true,
+            message: "Applicant status updated successfully.",
+        };
 
 
 
     } catch (error) {
-        console.error('Error in Sending EMAIL:', error);
+        console.error('Error in JobApplicationStatus:', error);
         return {
             success: false,
-            message: error.message || 'An error occurred while sending the Email',
+            message: error.message || 'An error occurred',
+        };
+    }
+}
+
+export async function SendEmailToCandidate(email, candidateEmail, ApplicationStatus, jobName) {
+    try {
+        // Create transporter with Gmail app password
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // Use TLS
+            auth: {
+                user: "jobportalapp3@gmail.com", // Your Gmail address
+                pass: "qfzr qbzm rlzw yvxm" // Your Gmail App Password
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        // Email options
+        const mailOptions = {
+            from: '"Job Portal" <jobportalapp3@gmail.com>', // Sender name and email
+            to: candidateEmail,
+            subject: `Job Application Status Update: ${ApplicationStatus}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>Job Application Status Update</h2>
+                    <p>Dear Candidate,</p>
+                    <p>Your application for the position of <strong>${jobName}</strong> has been <strong>${ApplicationStatus}</strong>.</p>
+                    <p>Thank you for your interest in our organization.</p>
+                    <br/>
+                    <p>Best regards,</p>
+                    <p>HR Team</p>
+                </div>
+            `
+        };
+
+        // Send email
+        const info = await transporter.sendMail(mailOptions);
+
+        if (info.messageId) {
+            console.log('Email sent successfully:', info.messageId);
+            return {
+                success: true,
+                message: "Email notification sent successfully"
+            };
+        }
+
+        throw new Error("Failed to send email");
+
+    } catch (error) {
+        console.error('Error in SendEmailToCandidate:', error);
+        return {
+            success: false,
+            message: error.message || 'Failed to send email notification'
         };
     }
 }
