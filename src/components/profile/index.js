@@ -15,7 +15,9 @@ export default function ProfileComponent({ ProfileInfo }) {
   const [jobList, setJobList] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [selectedAppStatus, setselectedAppStatus] = useState("")
+  const [applicantStatus, setApplicantStatus] = useState("")
   const jobs = useSelector((state) => state.job.jobs)
+  const job = useSelector((state) => state.job.SingleJob)
   const SupabaseClient = createClient("https://pufnqviswcgxajjpucmr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Zm5xdmlzd2NneGFqanB1Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjczMDAsImV4cCI6MjA1MTc0MzMwMH0.h0hrZ33R2iz06Cg13NgHvmvUr8AexEeWeo_LBBNd8lk")
 
   useEffect(() => {
@@ -25,6 +27,21 @@ export default function ProfileComponent({ ProfileInfo }) {
   }, [jobs])
 
 
+  useEffect(() => {
+    if (job && ProfileInfo?.userId) {
+
+      const applicant = job.applicants?.find(
+        (user) => user.applicantData.userId === ProfileInfo.userId
+      );
+
+
+      if (applicant) {
+        setApplicantStatus(applicant.applicantData.status[0]);
+      } else {
+        setApplicantStatus("pending");
+      }
+    }
+  }, [job, ProfileInfo?.userId]);
 
 
 
@@ -105,10 +122,39 @@ export default function ProfileComponent({ ProfileInfo }) {
         </CardContent>
         <CardFooter className="flex items-center justify-center">
           <div className='w-[30%] p-1 flex items-center gap-2'>
-            <Button onClick={handleSelectforJob}>Select</Button>
-            <Button variant="destructive" onClick={handleRejectforJob}>Reject</Button>
+            <Button
+              onClick={handleSelectforJob}
+              disabled={applicantStatus === "accepted"}
+              variant={applicantStatus === "accepted" ? "success" : "default"}
+            >
+              {applicantStatus === "accepted" ? "Accepted ✓" : "Accept"}
+            </Button>
+            <Button
+              onClick={handleRejectforJob}
+              disabled={applicantStatus === "rejected"}
+              variant="destructive"
+            >
+              {applicantStatus === "rejected" ? "Rejected ✕" : "Reject"}
+            </Button>
           </div>
-
+          {/* Status message */}
+          <div className="ml-4">
+            {applicantStatus === "pending" && (
+              <Badge variant="outline" className="bg-yellow-100">
+                Application Pending
+              </Badge>
+            )}
+            {applicantStatus === "accepted" && (
+              <Badge variant="outline" className="bg-green-100">
+                Application Accepted
+              </Badge>
+            )}
+            {applicantStatus === "rejected" && (
+              <Badge variant="outline" className="bg-red-100">
+                Application Rejected
+              </Badge>
+            )}
+          </div>
         </CardFooter>
 
       </Card>

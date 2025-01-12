@@ -28,6 +28,7 @@ export function AlertDialogDemo({ isOpen, setIsOpen, handleSelectforJob, handleR
 
         const fetchDetails = async () => {
             const details = await fetchUserDetails(userId)
+        
             if (details) {
                 setrecruiterDetails(details)
 
@@ -47,16 +48,17 @@ export function AlertDialogDemo({ isOpen, setIsOpen, handleSelectforJob, handleR
 
             let response;
             if (selectedAppStatus === "Accepted") {
-                response = await JobApplicationSelectedAction(jobId, userId);
+                response = await JobApplicationSelectedAction(jobId, userId, `/Profile/${userId}`);
             } else if (selectedAppStatus === "Rejected") {
-                response = await JobApplicationRejectedAction(jobId, userId);
+                response = await JobApplicationRejectedAction(jobId, userId, `/Profile/${userId}`);
             }
 
             if (response?.success) {
                 // Send email notification
+                console.log(ProfileInfo.email)
                 const emailResponse = await SendEmailToCandidate(
                     recruiterDetails.email,
-                    ProfileInfo.email, // Use candidate's email
+                    ProfileInfo.email, 
                     selectedAppStatus,
                     job.title
                 );

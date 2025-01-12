@@ -173,7 +173,7 @@ export async function JobApplicantApply(jobId, applicantData, pathToRevalidate) 
     }
 }
 
-export async function JobApplicationSelectedAction(jobId, userId) {
+export async function JobApplicationSelectedAction(jobId, userId, pathToRevalidate) {
     try {
         await ConnectToDb()
 
@@ -192,6 +192,7 @@ export async function JobApplicationSelectedAction(jobId, userId) {
             };
         }
 
+        revalidatePath(pathToRevalidate)
         return {
             success: true,
             message: "Applicant status updated successfully.",
@@ -209,7 +210,7 @@ export async function JobApplicationSelectedAction(jobId, userId) {
     }
 }
 
-export async function JobApplicationRejectedAction(jobId, userId) {
+export async function JobApplicationRejectedAction(jobId, userId, pathToRevalidate) {
     try {
         await ConnectToDb()
 
@@ -228,6 +229,7 @@ export async function JobApplicationRejectedAction(jobId, userId) {
             };
         }
 
+       revalidatePath(pathToRevalidate)
         return {
             success: true,
             message: "Applicant status updated successfully.",
@@ -244,25 +246,25 @@ export async function JobApplicationRejectedAction(jobId, userId) {
     }
 }
 
+
+
 export async function SendEmailToCandidate(email, candidateEmail, ApplicationStatus, jobName) {
     try {
-        // Create transporter with Gmail app password
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: "smtp-relay.brevo.com",
             port: 587,
-            secure: false, // Use TLS
+            secure: false,
             auth: {
-                user: "jobportalapp3@gmail.com", // Your Gmail address
-                pass: "qfzr qbzm rlzw yvxm" // Your Gmail App Password
-            },
-            tls: {
-                rejectUnauthorized: false
+                user: "8358e8002@smtp-brevo.com", // Keep this as SMTP login
+                pass: process.env.SMTP_PASSWORD
             }
         });
 
-        // Email options
         const mailOptions = {
-            from: '"Job Portal" <jobportalapp3@gmail.com>', // Sender name and email
+            from: {
+                name: "HR Team",
+                address: "jobportalapp3@gmail.com"  // Replace with your verified sender email
+            },
             to: candidateEmail,
             subject: `Job Application Status Update: ${ApplicationStatus}`,
             html: `
@@ -278,18 +280,13 @@ export async function SendEmailToCandidate(email, candidateEmail, ApplicationSta
             `
         };
 
-        // Send email
         const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully:', info.messageId);
 
-        if (info.messageId) {
-            console.log('Email sent successfully:', info.messageId);
-            return {
-                success: true,
-                message: "Email notification sent successfully"
-            };
-        }
-
-        throw new Error("Failed to send email");
+        return {
+            success: true,
+            message: "Email notification sent successfully"
+        };
 
     } catch (error) {
         console.error('Error in SendEmailToCandidate:', error);
