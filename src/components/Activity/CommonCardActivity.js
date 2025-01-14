@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Briefcase, DollarSign, Clock } from 'lucide-react'
 
 export default function CommonCardActivity({ application }) {
-    console.log(application)
+    //console.log(application)
     return (
         <Card className="w-full max-w-2xl hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
