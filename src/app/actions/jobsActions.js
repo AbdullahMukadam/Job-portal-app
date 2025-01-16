@@ -229,7 +229,7 @@ export async function JobApplicationRejectedAction(jobId, userId, pathToRevalida
             };
         }
 
-       revalidatePath(pathToRevalidate)
+        revalidatePath(pathToRevalidate)
         return {
             success: true,
             message: "Applicant status updated successfully.",
@@ -293,6 +293,38 @@ export async function SendEmailToCandidate(email, candidateEmail, ApplicationSta
         return {
             success: false,
             message: error.message || 'Failed to send email notification'
+        };
+    }
+}
+
+export async function DeleteJobPost(id, pathToRevalidate) {
+
+    try {
+
+        await ConnectToDb();
+
+        const deleteJobPost = await Job.findByIdAndDelete(
+            id
+        )
+        if (!deleteJobPost) {
+            return {
+                success: false,
+                message: ' Job Post Not Found'
+            }
+        }
+
+        if (pathToRevalidate) {
+            revalidatePath(pathToRevalidate)
+        }
+
+        return {
+            success: true,
+            message: "Job Post Deleted Succesfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message || 'Failed to Delete Job Post'
         };
     }
 }

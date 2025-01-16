@@ -79,3 +79,44 @@ export async function UpdateCandidateProfileDetails(data, id, pathToRevalidate) 
         }
     }
 }
+
+export async function UpdateRecruiterProfileDetails(data, id, pathToRevalidate) {
+    try {
+
+        await ConnectToDb();
+
+        const cleanData = JSON.parse(JSON.stringify(data))
+
+        const updatedUser = await Profile.findByIdAndUpdate(
+            id,
+            cleanData,
+            {
+                new: true
+            }
+        )
+
+        if (!updatedUser) {
+            return {
+                success: false,
+                message: "Profile not found"
+            }
+        }
+
+        if (pathToRevalidate) {
+            revalidatePath(pathToRevalidate)
+        }
+
+        return {
+            success: true,
+            message: "Profile Details Updated Successfully"
+        }
+
+
+    } catch (error) {
+        console.error('Profile update error:', error)
+        return {
+            success: false,
+            message: "An Error Occurred in Updating User Profile"
+        }
+    }
+}

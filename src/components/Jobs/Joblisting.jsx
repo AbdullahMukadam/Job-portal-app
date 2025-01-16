@@ -4,12 +4,39 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Briefcase, Trash2 } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
+import { DeleteJobPost } from '@/app/actions/jobsActions'
 
 export default function JobListing({ job, setDrawerOpen, drawerOpen, setjobDetailsForDrawer }) {
+  const { toast } = useToast()
+  const [deleteStatus, setDeleteStatus] = useState(false)
 
   const handleJobDetailsForDrawer = () => {
     setDrawerOpen(true)
     setjobDetailsForDrawer(job)
+  }
+
+  const handleDeleteJobPost = async (jobId) => {
+    try {
+      setDeleteStatus(true)
+
+      const response = await DeleteJobPost(jobId, "/Jobs")
+      if (response.success) {
+        setDeleteStatus(false)
+        toast({
+          title: "Success",
+          description: " Job Post Deleted Succesfully" || error.message,
+        })
+      }
+    } catch (error) {
+      setDeleteStatus(false)
+      console.log("Error In Deleting Job Post", error)
+      toast({
+        title: "Error",
+        description: "Error In Deleting Job Post" || error.message,
+        variant: "destructive"
+      })
+    }
   }
 
   return (
@@ -51,9 +78,9 @@ export default function JobListing({ job, setDrawerOpen, drawerOpen, setjobDetai
       <CardFooter className=" flex justify-between items-center">
         <Button variant="outline" onClick={handleJobDetailsForDrawer}>See Applicants</Button>
         <div className="space-x-2 flex items-center">
-          <Button variant="destructive" >
+          <Button variant="destructive" onClick={() => handleDeleteJobPost(job._id)} disabled={deleteStatus}>
             <Trash2 className="mr-2 h-3 w-3" />
-            Delete
+            {deleteStatus ? "Deleting..." : "Delete"}
           </Button>
 
         </div>

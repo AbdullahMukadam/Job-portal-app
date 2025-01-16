@@ -67,7 +67,7 @@ export default function Header({ userDetails }) {
                     <Link href="/" className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block">
                             <Image
-                                src={"/images/next.svg"}
+                                src={"/assets/logo-job.jpg"}
                                 alt=" Logo"
                                 width={100}
                                 height={100}

@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from '../ui/checkbox'
+import Image from 'next/image'
 
 const FilterButton = ({ companyname, setcompanyname, location, setLocation, handleFilteration }) => {
     const [jobTypes, setJobTypes] = useState({
@@ -192,9 +193,18 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                         ))}
                     </div>
                 ) : (
-                    <p className="text-center text-gray-500 text-lg mt-8">
-                        {jobList.length === 0 ? "No jobs available." : "No matching jobs found."}
-                    </p>
+                    <div className="text-center py-12">
+                        <Image 
+                            src="/assets/job-match.svg"
+                            alt="No jobs found"
+                            width={120}
+                            height={120}
+                            className="mx-auto mb-4 opacity-50"
+                        />
+                        <p className="text-gray-500 text-lg">
+                            {jobList.length === 0 ? "No jobs available." : "No matching jobs found."}
+                        </p>
+                    </div>
                 )}
             </div>
             <DrawerDemo
