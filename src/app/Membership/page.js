@@ -1,7 +1,16 @@
+import MembershipComponent from '@/components/Membership-comp'
 import React from 'react'
+import { auth, currentUser } from '@clerk/nextjs/server'
+import { fetchUserDetails } from '../actions/detailsActions'
+import { redirect } from 'next/navigation'
 
-export default function MembershipPage() {
+export default async function MembershipPage() {
+  const { userId } = await auth()
+
+  const profileDetails = await fetchUserDetails(userId)
   return (
-    <div>MembershipPage</div>
+    <div className='w-full h-full p-2'>
+      <MembershipComponent profileDetails={profileDetails} />
+    </div>
   )
 }
