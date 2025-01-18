@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { fetchUserDetails } from './actions/detailsActions';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 console.log('STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
 console.log('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY exists:', !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -16,6 +17,7 @@ export default async function Home() {
     const user = await currentUser();
     const profileDetails = await fetchUserDetails(userId);
 
+    
     if (user && !profileDetails?._id) {
       redirect("/onBoard");
     } else if (user && profileDetails?._id) {
@@ -83,7 +85,7 @@ export default async function Home() {
     }
   }
 
-  // Landing page for non-authenticated users
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 py-12">

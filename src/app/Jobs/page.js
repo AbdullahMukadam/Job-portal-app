@@ -23,7 +23,7 @@ async function JobsContent({ userId }) {
         ? await fetchJobPostForCandidate() 
         : await fetchJobPostForRecruiter(userId)
 
-    // Serialize the profileDetails
+   
     const serializedProfileDetails = profileDetails ? JSON.parse(JSON.stringify(profileDetails)) : null
 
     return (

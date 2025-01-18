@@ -15,7 +15,8 @@ export default function MembershipComponent({ profileDetails }) {
     const pathName = useSearchParams()
     const [typeMembership, settypeMembership] = useState("")
     const path = pathName.get("status")
-    console.log(profileDetails)
+    const membershipTypeFromURL = pathName.get("membershipType")
+    //console.log(profileDetails)
 
     const pricingPlans = [
         {
@@ -90,15 +91,15 @@ export default function MembershipComponent({ profileDetails }) {
         const handleUpdateUserProfile = async () => {
 
             if (path === "success") {
-                
+
                 const formData = {
                     ...profileDetails,
-                    membershipType: typeMembership,
+                    membershipType: membershipTypeFromURL,
                     membershipstartDate: new Date().toISOString(),
                     membershipendDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
                     isPremiumUser: true,
                 }
-                const updateProfile = profileDetails?.role === "candidate" ? await UpdateCandidateProfileDetails(formData, profileDetails._id) : await UpdateRecruiterProfileDetails()
+                const updateProfile = profileDetails?.role === "candidate" ? await UpdateCandidateProfileDetails(formData, profileDetails._id, "/Membership") : await UpdateRecruiterProfileDetails(formData, profileDetails._id, "/Membership")
 
                 if (!updateProfile.success) {
                     toast({
@@ -123,17 +124,56 @@ export default function MembershipComponent({ profileDetails }) {
         }
 
         handleUpdateUserProfile()
-    }, [path])
+    }, [path, membershipTypeFromURL])
 
 
     return (
-        <div className='w-full h-full'>
-            <Button onClick={handleCancelMembership}>Cancel Membership</Button>
-            <div className="max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-stretch md:grid-cols-3 md:gap-8">
+        <div className='w-full min-h-screen bg-gray-50 py-8'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+                {/* Header Section */}
+                <div className='text-center mb-12'>
+                    <h1 className='text-4xl font-bold text-gray-900 mb-4'>Choose Your Plan</h1>
+                    <p className='text-lg text-gray-600 max-w-2xl mx-auto'>
+                        {ProfileRole === "candidate"
+                            ? "Select the perfect plan to boost your job search"
+                            : "Choose the ideal plan for your recruitment needs"
+                        }
+                    </p>
+                </div>
+
+                {/* Membership Control */}
+                {profileDetails?.isPremiumUser && (
+                    <div className='max-w-3xl mx-auto mb-8 p-4 bg-white rounded-lg shadow-sm border border-gray-200'>
+                        <div className='flex justify-between items-center'>
+                            <div>
+                                <h2 className='text-lg font-semibold text-gray-900'>Current Plan: {profileDetails.membershipType}</h2>
+                                <p className='text-sm text-gray-600'>Your premium membership is active</p>
+                            </div>
+                            <Button
+                                onClick={handleCancelMembership}
+                                variant="outline"
+                                className='border-red-500 text-red-500 hover:bg-red-50'
+                            >
+                                Cancel Membership
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Pricing Cards Grid */}
+                <div className='grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-8 mt-8'>
                     {pricingPlans.map((plan, index) => (
-                        <PricingCard key={index} {...plan} profileDetails={profileDetails} settypeMembership={settypeMembership} />
+                        <div key={index} className='transform transition-all duration-300 hover:scale-105'>
+                            <PricingCard {...plan} profileDetails={profileDetails} settypeMembership={settypeMembership} />
+                        </div>
                     ))}
+                </div>
+
+                
+                <div className='mt-16 text-center'>
+                    <p className='text-sm text-gray-600'>
+                        All plans include access to our basic features. Upgrade anytime to unlock more capabilities.
+                    </p>
                 </div>
             </div>
         </div>

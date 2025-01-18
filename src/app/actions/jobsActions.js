@@ -255,7 +255,7 @@ export async function SendEmailToCandidate(email, candidateEmail, ApplicationSta
             port: 587,
             secure: false,
             auth: {
-                user: "8358e8002@smtp-brevo.com", // Keep this as SMTP login
+                user: "8358e8002@smtp-brevo.com", 
                 pass: process.env.SMTP_PASSWORD
             }
         });
@@ -263,7 +263,7 @@ export async function SendEmailToCandidate(email, candidateEmail, ApplicationSta
         const mailOptions = {
             from: {
                 name: "HR Team",
-                address: "jobportalapp3@gmail.com"  // Replace with your verified sender email
+                address: "jobportalapp3@gmail.com"  
             },
             to: candidateEmail,
             subject: `Job Application Status Update: ${ApplicationStatus}`,

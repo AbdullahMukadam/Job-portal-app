@@ -24,6 +24,7 @@ export function PricingCard({ title, description, price, features, profileDetail
 
     const handlePayment = async () => {
         try {
+            settypeMembership(title)
             setIsLoading(true);
             const stripe = await stripePromise;
 
@@ -33,9 +34,11 @@ export function PricingCard({ title, description, price, features, profileDetail
 
 
             const session = await CreatePriceIdAction({
-                ammount: price
+                ammount: price,
+                membershipType: title
             }, title);
-            settypeMembership(session.type)
+            console.log(session.typeMembership)
+
 
             if (!session.success) {
                 throw new Error(session.message || 'Failed to create price');
@@ -47,7 +50,8 @@ export function PricingCard({ title, description, price, features, profileDetail
                     price: session.id,
                     quantity: 1
                 }],
-                email: profileDetails?.email
+                email: profileDetails?.email,
+                membershipType: title 
             });
 
             if (!mainPayment.success) {
@@ -92,9 +96,9 @@ export function PricingCard({ title, description, price, features, profileDetail
                     <span className="text-sm font-medium text-gray-700">/month</span>
                 </p>
                 <Button
-                    className="mt-4 w-full"
+                    className={`mt-4 w-full ${profileDetails?.membershipType === title ? "bg-white border-2 border-blue-600 text-black" : ""}`}
                     onClick={handlePayment}
-                    disabled={isLoading}
+                    disabled={profileDetails?.membershipType === title}
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center">
@@ -105,7 +109,7 @@ export function PricingCard({ title, description, price, features, profileDetail
                             Processing...
                         </span>
                     ) : (
-                        "Get Started"
+                        profileDetails?.membershipType === title ? "Purchased" : "Get Started"
                     )}
                 </Button>
             </div>

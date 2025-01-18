@@ -11,30 +11,33 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 export async function CreatePriceIdAction(data, membershipType) {
     try {
-       
         const product = await stripe.products.create({
-            name: "Premium Plan",
+            name: membershipType, 
             type: "service",
+            metadata: {
+                membershipType: membershipType 
+            }
         });
 
-        
         const session = await stripe.prices.create({
             currency: "inr",
             unit_amount: data.ammount * 100,
             recurring: {
-                interval: "year"
+                interval: "month" 
             },
-            product: product.id 
+            product: product.id,
+            metadata: {
+                membershipType: membershipType 
+            }
         });
 
         if (session) {
             return {
                 success: true,
                 id: session?.id,
-                type : membershipType
+                typeMembership: membershipType
             }
         }
-
     } catch (error) {
         console.error("Error in Creating PriceId", error)
         return {
@@ -50,16 +53,20 @@ export async function stripePaymentAction(data) {
             payment_method_types: ["card"],
             line_items: data.line_Items,
             mode: "subscription",
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/Membership?status=success`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/Membership?status=success&membershipType=${encodeURIComponent(data.membershipType)}`, 
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/Membership?status=cancel`,
             billing_address_collection: 'required',
-            customer_email: data.email, 
+            customer_email: data.email,
+            metadata: {
+                membershipType: data.membershipType 
+            }
         });
 
         if (payment) {
             return {
                 success: true,
-                id: payment.id
+                id: payment.id,
+                membershipType: data.membershipType
             }
         }
     } catch (error) {
@@ -70,4 +77,3 @@ export async function stripePaymentAction(data) {
         }
     }
 }
-

@@ -43,7 +43,7 @@ export async function UpdateCandidateProfileDetails(data, id, pathToRevalidate) 
     try {
         await ConnectToDb()
 
-        // Clean data to prevent circular references
+        
         const cleanData = JSON.parse(JSON.stringify(data))
 
         const updatedUser = await Profile.findByIdAndUpdate(
@@ -52,7 +52,7 @@ export async function UpdateCandidateProfileDetails(data, id, pathToRevalidate) 
             {
                 new: true
             }
-        ).lean() // Convert Mongoose document to plain JavaScript object
+        ).lean() 
 
         if (!updatedUser) {
             return {
@@ -61,7 +61,7 @@ export async function UpdateCandidateProfileDetails(data, id, pathToRevalidate) 
             }
         }
 
-        // Only revalidate if path is provided and update was successful
+        
         if (pathToRevalidate) {
             revalidatePath(pathToRevalidate)
         }
