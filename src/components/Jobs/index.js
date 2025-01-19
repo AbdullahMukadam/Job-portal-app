@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import PostNewJob from './PostNewJob'
 import JobListing from './Joblisting'
 import JobListingCandidate from './JobListingCandidate'
@@ -100,6 +100,9 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     const [location, setLocation] = useState("");
     const [filterJobs, setfilterJobs] = useState(jobList);
     const [isLoading, setIsLoading] = useState(true);
+    const currentUserId = useSelector((state) => state.auth.userId)
+    const [UserAppliedJobs, setUserAppliedJobs] = useState([])
+    const [eligiblityStatus, seteligiblityStatus] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -113,6 +116,14 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
         }
         setIsLoading(false);
     }, [jobList, dispatch]);
+
+    useEffect(() => {
+
+        const UserAppliedJobs = jobList.flatMap((job) => {
+            return job.applicants.filter((applicant) => applicant.applicantData.userId === currentUserId)
+        })
+        setUserAppliedJobs(UserAppliedJobs)
+    }, [])
 
     const handleFilteration = (jobTypes) => {
         if (!companyname && !location && !Object.values(jobTypes).some(value => value)) {
@@ -155,6 +166,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                 <h1 className="text-3xl font-bold">
                     {profileDetails?.role === "candidate" ? "Explore All Jobs" : "Jobs Dashboard"}
                 </h1>
+
                 <div>
                     {profileDetails?.role === "candidate" ? (
                         <FilterButton
@@ -169,7 +181,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                     )}
                 </div>
             </div>
-
+            {eligiblityStatus && <p className='text-red-600 text-center'>Please Upgrade to Premium Plan to Apply For More Jobs</p>}
             <div className="container mx-auto">
                 {filterJobs?.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -179,6 +191,9 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                                     key={jobItem._id}
                                     profileDetails={JSON.parse(JSON.stringify(profileDetails))}
                                     job={jobItem}
+                                    UserAppliedJobs={UserAppliedJobs}
+                                    eligiblityStatus={eligiblityStatus}
+                                    seteligiblityStatus={seteligiblityStatus}
                                 />
                             ) : (
                                 <JobListing
@@ -194,7 +209,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                     </div>
                 ) : (
                     <div className="text-center py-12">
-                        <Image 
+                        <Image
                             src="/assets/job-match.svg"
                             alt="No jobs found"
                             width={120}

@@ -7,25 +7,47 @@ import { MapPin, Calendar, Briefcase, DollarSign, Clock } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { JobApplicantApply } from '@/app/actions/jobsActions'
 
-export default function JobListingCandidate({ job, profileDetails }) {
+
+export default function JobListingCandidate({ job, profileDetails, UserAppliedJobs, eligiblityStatus, seteligiblityStatus }) {
     const { toast } = useToast()
 
     const [submittingStatus, setSubmittingStatus] = useState(false)
     const [appliedStatus, setAppliedStatus] = useState(false);
 
+    console.log(UserAppliedJobs)
+
     function checkJobApply() {
         const currentUserId = profileDetails?.userId;
-        
-        const hasApplied = job?.applicants?.some(applicant => 
+
+        const hasApplied = job?.applicants?.some(applicant =>
             applicant?.applicantData?.userId === currentUserId
         );
-        
+
         setAppliedStatus(hasApplied);
     }
 
     useEffect(() => {
         checkJobApply();
     }, [job?.applicants, profileDetails?.userId]);
+
+    useEffect(() => {
+        if (!profileDetails?.isPremiumUser && profileDetails.membershipType === "free") {
+            const checkAccess = UserAppliedJobs.length >= 1
+            if (checkAccess) {
+                seteligiblityStatus(true)
+            }
+        } else if (profileDetails?.membershipType === "Starter") {
+            const checkAccess = UserAppliedJobs.length >= 5
+            if (checkAccess) {
+                seteligiblityStatus(true)
+            }
+        } else if (profileDetails?.membershipType === "Pro") {
+            const checkAccess = UserAppliedJobs.length >= 10
+            if (checkAccess) {
+                seteligiblityStatus(true)
+            }
+        }
+    }, [profileDetails?.membershipType, profileDetails?.isPremiumUser, appliedStatus])
 
 
 
@@ -113,7 +135,7 @@ export default function JobListingCandidate({ job, profileDetails }) {
                     <Briefcase className="mr-2 h-4 w-4" />
                     {job.applicants.length} applicant(s)
                 </div>
-                <Button onClick={() => handleJobApplicantApply(job._id)} disabled={appliedStatus} >
+                <Button onClick={() => handleJobApplicantApply(job._id)} disabled={appliedStatus || eligiblityStatus} >
                     {submittingStatus ? (
                         <span className="flex items-center justify-center">
                             <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -126,6 +148,7 @@ export default function JobListingCandidate({ job, profileDetails }) {
                         appliedStatus ? "Applied" : "Apply Now"
                     )}
                 </Button>
+
             </CardFooter>
         </Card>
 
