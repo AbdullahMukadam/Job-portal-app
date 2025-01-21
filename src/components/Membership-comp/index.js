@@ -5,6 +5,7 @@ import { Button } from '../ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { UpdateCandidateProfileDetails, UpdateRecruiterProfileDetails } from '@/app/actions/detailsActions'
 import { useSearchParams } from 'next/navigation'
+import { UpgradeBanner } from '../ui/upgrade-banner'
 
 
 
@@ -17,6 +18,7 @@ export default function MembershipComponent({ profileDetails }) {
     const path = pathName.get("status")
     const membershipTypeFromURL = pathName.get("membershipType")
     //console.log(profileDetails)
+    const [visible, setvisible] = useState(false)
 
     const pricingPlans = [
         {
@@ -56,6 +58,10 @@ export default function MembershipComponent({ profileDetails }) {
             ],
         },
     ]
+
+    useEffect(() => {
+        setvisible(true)
+    }, [])
 
     const handleCancelMembership = async () => {
         try {
@@ -129,6 +135,11 @@ export default function MembershipComponent({ profileDetails }) {
 
     return (
         <div className='w-full min-h-screen bg-gray-50 py-8'>
+            {visible && <UpgradeBanner
+                buttonText='Important Note :'
+                description="Payments are in Test Mode, Please Dont Enter Your Real CARD Details."
+                onClose={() => setvisible(false)}
+            />}
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
                 {/* Header Section */}
                 <div className='text-center mb-12'>
@@ -169,7 +180,7 @@ export default function MembershipComponent({ profileDetails }) {
                     ))}
                 </div>
 
-                
+
                 <div className='mt-16 text-center'>
                     <p className='text-sm text-gray-600'>
                         All plans include access to our basic features. Upgrade anytime to unlock more capabilities.
