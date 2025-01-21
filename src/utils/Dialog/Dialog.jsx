@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { createJobAction } from "@/app/actions/jobsActions"
+import { useSelector } from "react-redux"
 
 export function DialogDemo({ profileDetails }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -26,7 +27,54 @@ export function DialogDemo({ profileDetails }) {
     }
   });
 
+  const jobList = useSelector((state) => state.job.jobs)
+  const [recruiterEligiblity, setrecruiterEligiblity] = useState(false)
+
   const { toast } = useToast()
+
+  useEffect(() => {
+    //console.log(jobList)
+    if (!profileDetails?.isPremiumUser && profileDetails.membershipType === "free") {
+      const checkAccess = jobList?.length >= 2
+      if (checkAccess) {
+        setrecruiterEligiblity(true)
+        setTimeout(() => {
+          toast({
+            title: "Membership",
+            description: "Please Upgrade to Premium Plan to Post More Jobs.",
+            variant: "destructive",
+          });
+        }, 3000);
+      }
+
+    } else if (profileDetails?.membershipType === "Starter") {
+      const checkAccess = jobList?.length >= 5
+      if (checkAccess) {
+        setrecruiterEligiblity(true)
+        setTimeout(() => {
+          toast({
+            title: "Membership",
+            description: "Please Upgrade to Premium Plan to Post More Jobs.",
+            variant: "destructive",
+          });
+        }, 3000);
+      }
+
+    } else if (profileDetails?.membershipType === "Pro") {
+      const checkAccess = jobList.length >= 10
+      if (checkAccess) {
+        setrecruiterEligiblity(true)
+        setTimeout(() => {
+          toast({
+            title: "Membership",
+            description: "Please Upgrade to Premium Plan to Post More Jobs.",
+            variant: "destructive",
+          });
+        }, 3000);
+      }
+
+    }
+  }, [profileDetails?.isPremiumUser, profileDetails?.membershipType, jobList])
 
   const submitHandler = async (data) => {
     try {
@@ -39,7 +87,7 @@ export function DialogDemo({ profileDetails }) {
         return;
       }
 
-      
+
       const formData = {
         CompanyName: data.CompanyName,
         type: data.type,
@@ -75,9 +123,10 @@ export function DialogDemo({ profileDetails }) {
 
   return (
     <>
+
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Add New Job Post</Button>
+          <Button variant={recruiterEligiblity ? "destructive" : "outline"} disabled={recruiterEligiblity}>{recruiterEligiblity ? "Upgrade Membership" : "Add New Job Post"}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-screen-md max-h-[80vh] overflow-y-auto">
           <DialogHeader>

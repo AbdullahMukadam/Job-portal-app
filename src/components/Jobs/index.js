@@ -1,25 +1,26 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import PostNewJob from './PostNewJob'
-import JobListing from './Joblisting'
-import JobListingCandidate from './JobListingCandidate'
-import { DrawerDemo } from '@/utils/Drawer/Drawer'
-import { AllJobList, RemoveJobList } from '@/app/Slices/JobSlice'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PostNewJob from './PostNewJob';
+import JobListing from './Joblisting';
+import JobListingCandidate from './JobListingCandidate';
+import { DrawerDemo } from '@/utils/Drawer/Drawer';
+import { AllJobList, RemoveJobList } from '@/app/Slices/JobSlice';
 import {
     Menubar,
-    MenubarCheckboxItem,
     MenubarContent,
     MenubarItem,
     MenubarMenu,
     MenubarSeparator,
     MenubarTrigger,
-} from "@/components/ui/menubar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from '../ui/checkbox'
-import Image from 'next/image'
+} from "@/components/ui/menubar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from '../ui/checkbox';
+import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Briefcase, Calendar, Search, SlidersHorizontal } from 'lucide-react';
+import Image from 'next/image';
 
 const FilterButton = ({ companyname, setcompanyname, location, setLocation, handleFilteration }) => {
     const [jobTypes, setJobTypes] = useState({
@@ -41,10 +42,13 @@ const FilterButton = ({ companyname, setcompanyname, location, setLocation, hand
     };
 
     return (
-        <Menubar className="border rounded-md">
+        <Menubar className="border-none">
             <MenubarMenu>
                 <MenubarTrigger asChild>
-                    <Button variant="outline">Filter</Button>
+                    <Button variant="outline" className="gap-2">
+                        <SlidersHorizontal className="w-4 h-4" />
+                        Filters
+                    </Button>
                 </MenubarTrigger>
                 <MenubarContent className="w-80">
                     <div className="grid gap-4 p-4">
@@ -55,6 +59,7 @@ const FilterButton = ({ companyname, setcompanyname, location, setLocation, hand
                                 placeholder="Enter company name"
                                 value={companyname}
                                 onChange={(e) => setcompanyname(e.target.value)}
+                                className="bg-gray-50"
                             />
                         </div>
                         <div className="space-y-2">
@@ -64,15 +69,15 @@ const FilterButton = ({ companyname, setcompanyname, location, setLocation, hand
                                 placeholder="Enter location"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
+                                className="bg-gray-50"
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Job Type</Label>
                             <div className="grid grid-cols-2 gap-2">
                                 {Object.keys(jobTypes).map((type) => (
-                                    <label key={type} htmlFor={type} className="flex items-center space-x-2">
+                                    <label key={type} className="flex items-center space-x-2">
                                         <Checkbox
-                                            id={type}
                                             checked={jobTypes[type]}
                                             onCheckedChange={() => handleTypeChange(type)}
                                         />
@@ -83,7 +88,9 @@ const FilterButton = ({ companyname, setcompanyname, location, setLocation, hand
                         </div>
                         <MenubarSeparator />
                         <MenubarItem asChild>
-                            <Button className="w-full" onClick={handleApplyFilters}>Apply Filters</Button>
+                            <Button className="w-full" onClick={handleApplyFilters}>
+                                Apply Filters
+                            </Button>
                         </MenubarItem>
                     </div>
                 </MenubarContent>
@@ -100,9 +107,9 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     const [location, setLocation] = useState("");
     const [filterJobs, setfilterJobs] = useState(jobList);
     const [isLoading, setIsLoading] = useState(true);
-    const currentUserId = useSelector((state) => state.auth.userId)
-    const [UserAppliedJobs, setUserAppliedJobs] = useState([])
-    const [eligiblityStatus, seteligiblityStatus] = useState(false)
+    const currentUserId = useSelector((state) => state.auth.userId);
+    const [UserAppliedJobs, setUserAppliedJobs] = useState([]);
+    const [eligiblityStatus, seteligiblityStatus] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -118,12 +125,11 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     }, [jobList, dispatch]);
 
     useEffect(() => {
-
         const UserAppliedJobs = jobList.flatMap((job) => {
-            return job.applicants.filter((applicant) => applicant.applicantData.userId === currentUserId)
-        })
-        setUserAppliedJobs(UserAppliedJobs)
-    }, [])
+            return job.applicants.filter((applicant) => applicant.applicantData.userId === currentUserId);
+        });
+        setUserAppliedJobs(UserAppliedJobs);
+    }, []);
 
     const handleFilteration = (jobTypes) => {
         if (!companyname && !location && !Object.values(jobTypes).some(value => value)) {
@@ -155,56 +161,108 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     };
 
     if (isLoading) {
-        return <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        </div>;
+        return (
+            <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+        );
     }
 
     return (
-        <div className="w-full h-full p-4">
-            <div className="w-full mb-6 flex items-center justify-between">
-                <h1 className="text-3xl font-bold">
-                    {profileDetails?.role === "candidate" ? "Explore All Jobs" : "Jobs Dashboard"}
-                </h1>
-
-                <div>
-                    {profileDetails?.role === "candidate" ? (
-                        <FilterButton
-                            companyname={companyname}
-                            setcompanyname={setcompanyname}
-                            location={location}
-                            setLocation={setLocation}
-                            handleFilteration={handleFilteration}
-                        />
-                    ) : (
-                        <PostNewJob profileDetails={profileDetails} />
-                    )}
+        <div className="min-h-screen bg-gray-50">
+            {/* Search Section */}
+            <div className="w-full bg-white shadow-sm border-b">
+                <div className="max-w-7xl mx-auto p-6">
+                    <div className="flex flex-wrap gap-4 items-center">
+                        <div className="flex-1 min-w-[200px]">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+                                <Input 
+                                    placeholder="Search by role" 
+                                    className="pl-10 bg-gray-50"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-1 min-w-[200px]">
+                            <div className="relative">
+                                <MapPin className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+                                <Input 
+                                    placeholder="Location" 
+                                    className="pl-10 bg-gray-50"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-1 min-w-[200px]">
+                            <div className="relative">
+                                <Briefcase className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+                                <Input 
+                                    placeholder="Company" 
+                                    className="pl-10 bg-gray-50"
+                                    value={companyname}
+                                    onChange={(e) => setcompanyname(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <FilterButton
+                                companyname={companyname}
+                                setcompanyname={setcompanyname}
+                                location={location}
+                                setLocation={setLocation}
+                                handleFilteration={handleFilteration}
+                            />
+                            {profileDetails?.role !== "candidate" && (
+                                <PostNewJob profileDetails={profileDetails} />
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
-            {eligiblityStatus && <p className='text-red-600 text-center'>Please Upgrade to Premium Plan to Apply For More Jobs</p>}
-            <div className="container mx-auto">
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto p-6">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-semibold">
+                        {profileDetails?.role === "candidate" ? (
+                            <>Recommended jobs <span className="text-sm bg-gray-100 px-2 py-1 rounded-full">{filterJobs.length}</span></>
+                        ) : (
+                            "Jobs Dashboard"
+                        )}
+                    </h2>
+                </div>
+
+                {eligiblityStatus && (
+                    <p className='text-red-600 text-center mb-4'>
+                        Please Upgrade to Premium Plan to Apply For More Jobs
+                    </p>
+                )}
+
                 {filterJobs?.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-4">
                         {filterJobs.map((jobItem) => (
-                            profileDetails?.role === "candidate" ? (
-                                <JobListingCandidate
-                                    key={jobItem._id}
-                                    profileDetails={JSON.parse(JSON.stringify(profileDetails))}
-                                    job={jobItem}
-                                    UserAppliedJobs={UserAppliedJobs}
-                                    eligiblityStatus={eligiblityStatus}
-                                    seteligiblityStatus={seteligiblityStatus}
-                                />
-                            ) : (
-                                <JobListing
-                                    key={jobItem._id}
-                                    profileDetails={JSON.parse(JSON.stringify(profileDetails))}
-                                    job={jobItem}
-                                    setDrawerOpen={setDrawerOpen}
-                                    drawerOpen={drawerOpen}
-                                    setjobDetailsForDrawer={setjobDetailsForDrawer}
-                                />
-                            )
+                            <Card key={jobItem._id} className="hover:shadow-md transition-shadow">
+                                <CardContent className="p-6">
+                                    {profileDetails?.role === "candidate" ? (
+                                        <JobListingCandidate
+                                            profileDetails={JSON.parse(JSON.stringify(profileDetails))}
+                                            job={jobItem}
+                                            UserAppliedJobs={UserAppliedJobs}
+                                            eligiblityStatus={eligiblityStatus}
+                                            seteligiblityStatus={seteligiblityStatus}
+                                        />
+                                    ) : (
+                                        <JobListing
+                                            profileDetails={JSON.parse(JSON.stringify(profileDetails))}
+                                            job={jobItem}
+                                            setDrawerOpen={setDrawerOpen}
+                                            drawerOpen={drawerOpen}
+                                            setjobDetailsForDrawer={setjobDetailsForDrawer}
+                                        />
+                                    )}
+                                </CardContent>
+                            </Card>
                         ))}
                     </div>
                 ) : (
@@ -222,6 +280,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                     </div>
                 )}
             </div>
+            
             <DrawerDemo
                 setDrawerOpen={setDrawerOpen}
                 drawerOpen={drawerOpen}

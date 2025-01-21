@@ -1,128 +1,185 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu } from 'lucide-react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useClerk, UserButton, useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
-import { login, logout } from '@/app/Slices/AuthSlice'
-import Image from 'next/image'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, Home, Briefcase, User, Activity, Crown } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useClerk, UserButton, useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { login, logout } from '@/app/Slices/AuthSlice';
+import Image from 'next/image';
 
+const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails, isMobile = false }) => {
+    const items = [
+        {
+            href: "/",
+            label: "Home",
+            icon: Home,
+            show: true
+        },
+        {
+            href: authStatus ? "/Jobs" : "/sign-in",
+            label: authStatus ? "Jobs" : "Sign In",
+            icon: Briefcase,
+            show: true
+        },
+        {
+            href: authStatus ? "/user-profile" : "/sign-up",
+            label: authStatus ? "Profile" : "Sign Up",
+            icon: User,
+            show: true
+        },
+        {
+            href: "/activity",
+            label: "Activity",
+            icon: Activity,
+            show: userDetails?.role === "candidate"
+        },
+        {
+            href: "/Membership",
+            label: "Membership",
+            icon: Crown,
+            show: authStatus
+        }
+    ];
 
-const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails }) => (
-    <>
-        <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href="/">Home</Link>
+    return items.map((item, index) => item.show && (
+        <Button
+            key={index}
+            variant="ghost"
+            className={`${className} ${isMobile ? 'justify-start w-full' : 'h-9'} gap-2`}
+            onClick={onClick}
+        >
+            <Link href={item.href} className="flex items-center gap-2">
+                <item.icon className="h-4 w-4" />
+                <span>{item.label}</span>
+            </Link>
         </Button>
-        <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={authStatus ? "/Jobs" : "/sign-in"}>{authStatus ? "Jobs" : "Sign In"}</Link>
-        </Button>
-        <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={authStatus ? "/user-profile" : "/sign-up"}>{authStatus ? "Profile" : "Sign Up"}</Link>
-        </Button>
-        {userDetails?.role === "candidate" && <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={"/activity"}>Activity</Link>
-        </Button>}
-        {authStatus && <Button variant="ghost" className={className} onClick={onClick}>
-            <Link href={"/Membership"}> Membership</Link>
-        </Button>}
-    </>
-)
+    ));
+};
 
 export default function Header({ userDetails }) {
-    const [isOpen, setIsOpen] = useState(false)
-    const authStatus = useSelector((state) => state.auth.status)
-    const { signOut } = useClerk()
-    const { user, isLoaded } = useUser()
-    const router = useRouter()
-    const dispatch = useDispatch()
+    const [isOpen, setIsOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const authStatus = useSelector((state) => state.auth.status);
+    const { signOut } = useClerk();
+    const { user, isLoaded } = useUser();
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 0);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         if (isLoaded) {
             if (user) {
-                dispatch(login(user.id))
+                dispatch(login(user.id));
             } else {
-                dispatch(logout())
+                dispatch(logout());
             }
         }
-    }, [user, isLoaded, dispatch])
+    }, [user, isLoaded, dispatch]);
 
     const handleLogout = async () => {
         try {
-            await signOut()
-            dispatch(logout())
-            router.push('/sign-in')
+            await signOut();
+            dispatch(logout());
+            router.push('/sign-in');
         } catch (error) {
-            console.error('Logout failed:', error)
+            console.error('Logout failed:', error);
         }
-    }
+    };
 
     return (
-        <header className="sticky top-0 z-50 w-full p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 items-center">
-                <div className="mr-4 hidden md:flex">
-                    <Link href="/" className="mr-6 flex items-center space-x-2">
-                        <span className="hidden font-bold sm:inline-block">
+        <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled
+                ? 'bg-white/80 backdrop-blur-lg border-b shadow-sm'
+                : 'bg-white'
+            }`}>
+            <div className="container mx-auto">
+                <div className="flex h-16 items-center justify-between px-4">
+                    {/* Logo and Desktop Navigation */}
+                    <div className="flex items-center gap-8">
+                        <Link href="/" className="flex items-center gap-2">
                             <Image
-                                src={"/assets/logo-job.jpg"}
-                                alt=" Logo"
+                                src="/assets/logo-job.jpg"
+                                alt="Logo"
                                 width={100}
                                 height={100}
+                                className="h-8 w-auto"
                             />
-                        </span>
-                    </Link>
-                    <nav className="flex items-center space-x-6 text-sm font-medium">
-                        <NavItems authStatus={authStatus} userDetails={userDetails} />
-                    </nav>
-                </div>
-                <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                    <SheetTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-                        >
-                            <Menu className="h-5 w-5" />
-                            <span className="sr-only">Toggle Menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="pr-0">
-                        <nav className="flex flex-col space-y-4">
-                            <NavItems className="w-full justify-start" onClick={() => setIsOpen(false)} authStatus={authStatus} userDetails={userDetails} />
+                        </Link>
+
+                        <nav className="hidden md:flex items-center gap-1">
+                            <NavItems authStatus={authStatus} userDetails={userDetails} />
                         </nav>
-                    </SheetContent>
-                </Sheet>
-                <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-                    <div className="w-full flex-1 md:w-auto md:flex-none">
-                        
                     </div>
-                    <nav className="flex items-center">
-                        {authStatus &&
+
+                    {/* Mobile Menu */}
+                    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                        <SheetTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="md:hidden"
+                            >
+                                <Menu className="h-5 w-5" />
+                                <span className="sr-only">Toggle Menu</span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-72 p-6">
+                            <Link href="/" className="flex items-center gap-2 mb-8">
+                                <Image
+                                    src="/assets/logo-job.jpg"
+                                    alt="Logo"
+                                    width={100}
+                                    height={100}
+                                    className="h-8 w-auto"
+                                />
+                            </Link>
+                            <nav className="flex flex-col gap-2">
+                                <NavItems
+                                    className="justify-start"
+                                    onClick={() => setIsOpen(false)}
+                                    authStatus={authStatus}
+                                    userDetails={userDetails}
+                                    isMobile={true}
+                                />
+                            </nav>
+                        </SheetContent>
+                    </Sheet>
+
+                    {/* User Menu */}
+                    <div className="flex items-center gap-4">
+                        {authStatus && (
                             <UserButton
                                 afterSignOutUrl="/sign-in"
                                 appearance={{
                                     elements: {
                                         avatarBox: {
-                                            width: 40,
-                                            height: 40,
+                                            width: 32,
+                                            height: 32,
                                         },
                                     },
                                 }}
                                 userProfileMode="navigation"
                                 userProfileUrl="/Profile"
                                 onSignOutClick={(e) => {
-                                    e.preventDefault()
-                                    handleLogout()
+                                    e.preventDefault();
+                                    handleLogout();
                                 }}
                             />
-
-                        }
-                    </nav>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>
-    )
+    );
 }
-

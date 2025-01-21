@@ -21,7 +21,7 @@ export default function MembershipComponent({ profileDetails }) {
     const pricingPlans = [
         {
             title: 'Starter',
-            description: ProfileRole === "candidate" ? "For Basic Features" : "For Testing and Understanding the features.",
+            description: ProfileRole === "candidate" ? "For Basic Features" : "For Testing the features.",
             price: 200,
             features: [
                 { name: ProfileRole === "candidate" ? "5 Application" : "5 Job Post", included: true },
