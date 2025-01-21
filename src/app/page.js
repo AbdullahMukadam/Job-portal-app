@@ -14,7 +14,7 @@ export default async function Home() {
   if (userId) {
     const user = await currentUser();
     const profileDetails = await fetchUserDetails(userId);
-    
+
     if (user && !profileDetails?._id) {
       redirect("/onBoard");
     } else if (user && profileDetails?._id) {
@@ -28,18 +28,18 @@ export default async function Home() {
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
-                      <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent inline-block [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
                         Welcome Back!
                       </h1>
                       <p className="text-gray-600">Your job search journey continues here</p>
                     </div>
                     <div className="relative">
                       <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-md"></div>
-                      <Image 
-                        src="/assets/profile-welcome.svg" 
-                        alt="Profile" 
-                        width={80} 
-                        height={80} 
+                      <Image
+                        src="/assets/profile-welcome.svg"
+                        alt="Profile"
+                        width={80}
+                        height={80}
                         className="relative rounded-full border-2 border-blue-500/30 p-1"
                       />
                     </div>
@@ -73,16 +73,16 @@ export default async function Home() {
                   gradient: 'from-pink-500/10 to-pink-600/10'
                 }
               ].map((item, index) => (
-                <Card 
-                  key={index} 
+                <Card
+                  key={index}
                   className="group hover:shadow-lg transition-all duration-300 border-0 relative overflow-hidden"
                 >
                   <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
                   <CardContent className="relative p-6 space-y-4">
                     <div className="h-40 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <Image 
+                      <Image
                         src={item.icon}
-                        alt={item.title} 
+                        alt={item.title}
                         width={160}
                         height={160}
                         className="object-contain"
@@ -101,7 +101,7 @@ export default async function Home() {
       );
     }
   }
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
@@ -109,22 +109,22 @@ export default async function Home() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="lg:w-1/2 space-y-6">
             <h1 className="text-5xl font-bold leading-tight">
-              Find Your Dream Job{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Find Your Dream Job
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent inline-block [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
                 Build Your Future
               </span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              Connect with top employers and take the next step in your career journey. 
+              Connect with top employers and take the next step in your career journey.
               Join thousands of professionals finding their perfect match.
             </p>
             <div className="flex gap-4 pt-4">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
                 Get Started <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="border-blue-600 text-blue-600 hover:bg-blue-50"
               >
                 Learn More
@@ -134,11 +134,11 @@ export default async function Home() {
           <div className="lg:w-1/2">
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur-2xl"></div>
-              <Image 
+              <Image
                 src="/assets/undraw_job-hunt_5umi.svg"
-                alt="Job Search" 
-                width={600} 
-                height={400} 
+                alt="Job Search"
+                width={600}
+                height={400}
                 className="relative rounded-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>
@@ -172,8 +172,8 @@ export default async function Home() {
                 gradient: 'from-pink-500 to-pink-600'
               }
             ].map((item, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className="group hover:shadow-xl transition-all duration-300 border-0 relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -182,7 +182,7 @@ export default async function Home() {
                     {item.step}
                   </div>
                   <div className="h-32 flex items-center justify-center">
-                    <Image 
+                    <Image
                       src={item.icon}
                       alt={item.title}
                       width={120}
