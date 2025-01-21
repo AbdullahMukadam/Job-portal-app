@@ -21,6 +21,7 @@ import { Checkbox } from '../ui/checkbox';
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Briefcase, Calendar, Search, SlidersHorizontal } from 'lucide-react';
 import Image from 'next/image';
+import { UpgradeBanner } from "@/components/ui/upgrade-banner";
 
 const FilterButton = ({ companyname, setcompanyname, location, setLocation, handleFilteration }) => {
     const [jobTypes, setJobTypes] = useState({
@@ -110,6 +111,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     const currentUserId = useSelector((state) => state.auth.userId);
     const [UserAppliedJobs, setUserAppliedJobs] = useState([]);
     const [eligiblityStatus, seteligiblityStatus] = useState(false);
+    const [visible, setvisible] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -125,6 +127,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     }, [jobList, dispatch]);
 
     useEffect(() => {
+        setvisible(true)
         const UserAppliedJobs = jobList.flatMap((job) => {
             return job.applicants.filter((applicant) => applicant.applicantData.userId === currentUserId);
         });
@@ -170,6 +173,11 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {visible && <UpgradeBanner
+                buttonText='Important Note :'
+                description="The Location, Company and Search Doesnt work, Only The Filter Button Works"
+                onClose={() => setvisible(false)}
+            />}
             {/* Search Section */}
             <div className="w-full bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto p-6">
@@ -177,8 +185,8 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                         <div className="flex-1 min-w-[200px]">
                             <div className="relative">
                                 <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                                <Input 
-                                    placeholder="Search by role" 
+                                <Input
+                                    placeholder="Search by role"
                                     className="pl-10 bg-gray-50"
                                 />
                             </div>
@@ -186,8 +194,8 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                         <div className="flex-1 min-w-[200px]">
                             <div className="relative">
                                 <MapPin className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                                <Input 
-                                    placeholder="Location" 
+                                <Input
+                                    placeholder="Location"
                                     className="pl-10 bg-gray-50"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
@@ -197,8 +205,8 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                         <div className="flex-1 min-w-[200px]">
                             <div className="relative">
                                 <Briefcase className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                                <Input 
-                                    placeholder="Company" 
+                                <Input
+                                    placeholder="Company"
                                     className="pl-10 bg-gray-50"
                                     value={companyname}
                                     onChange={(e) => setcompanyname(e.target.value)}
@@ -280,7 +288,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                     </div>
                 )}
             </div>
-            
+
             <DrawerDemo
                 setDrawerOpen={setDrawerOpen}
                 drawerOpen={drawerOpen}
