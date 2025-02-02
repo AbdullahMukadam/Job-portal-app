@@ -35,16 +35,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          suppressHydrationWarning
+
         >
-          <Suspense fallback={<SkeletonDemo />}>
-            <CommonLayout>
-              {children}
-            </CommonLayout>
-          </Suspense>
+          <div className="min-h-screen flex flex-col items-center">
+            <main className="w-full max-w-7xl mx-auto">
+              <Suspense fallback={<SkeletonDemo />}>
+                <CommonLayout>
+                  {children}
+                </CommonLayout>
+              </Suspense>
+            </main>
+          </div>
+
         </body>
       </html>
     </ClerkProvider>
