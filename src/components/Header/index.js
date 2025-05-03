@@ -48,8 +48,8 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails
     return items.map((item, index) => item.show && (
         <Button
             key={index}
-            variant="ghost"
-            className={`${className} ${isMobile ? 'justify-start w-full' : 'h-9'} gap-2`}
+            variant="outline"
+            className={`${className} ${isMobile ? 'justify-start w-full' : 'h-9'} gap-2 rounded-xl border-2 border-black font-mono`}
             onClick={onClick}
         >
             <Link href={item.href} className="flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function Header({ userDetails }) {
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center gap-2">
                             <Image
-                                src="/assets/logo-job.jpg"
+                                src="/favicon.ico"
                                 alt="Logo"
                                 width={100}
                                 height={100}

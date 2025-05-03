@@ -21,10 +21,6 @@ export const metadata = {
   icons: {
     icon: [
       {
-        url: '/favicon.ico',
-        sizes: 'any',
-      },
-      {
         url: '/assets/logo-job.jpg',
         type: 'image/jpeg',
       },

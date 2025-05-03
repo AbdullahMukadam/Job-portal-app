@@ -1,17 +1,33 @@
 "use client"
-
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useToast } from '@/hooks/use-toast'
-import { UpdateCandidateProfileDetails } from '@/app/actions/detailsActions'
-import { Briefcase, MapPin, DollarSign, Clock, Code, Building2, GraduationCap, Calendar, Linkedin, Github, Mail, User } from 'lucide-react'
+import { useToast } from "@/hooks/use-toast"
+import { UpdateCandidateProfileDetails } from "@/app/actions/detailsActions"
+import {
+    Briefcase,
+    MapPin,
+    DollarSign,
+    Clock,
+    Code,
+    Building2,
+    GraduationCap,
+    Calendar,
+    Linkedin,
+    Github,
+    Mail,
+    User,
+    Loader2,
+} from "lucide-react"
 
 export default function CandidateProfile({ profileDetails }) {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
         defaultValues: {
             name: profileDetails.CandidateInfo.Name,
             email: profileDetails.email,
@@ -26,8 +42,8 @@ export default function CandidateProfile({ profileDetails }) {
             college: profileDetails.CandidateInfo.College,
             graduationYear: Number(profileDetails.CandidateInfo.GraduatedYear),
             linkedInProfile: profileDetails.CandidateInfo.LinkedInProfile,
-            githubProfile: profileDetails.CandidateInfo.GithubProfile
-        }
+            githubProfile: profileDetails.CandidateInfo.GithubProfile,
+        },
     })
     const { toast } = useToast()
 
@@ -55,8 +71,8 @@ export default function CandidateProfile({ profileDetails }) {
                     College: data.college,
                     GraduatedYear: Number(data.graduationYear),
                     LinkedInProfile: data.linkedInProfile,
-                    GithubProfile: data.githubProfile
-                }
+                    GithubProfile: data.githubProfile,
+                },
             }
 
             const response = await UpdateCandidateProfileDetails(formData, profileDetails._id, "/user-profile")
@@ -70,7 +86,7 @@ export default function CandidateProfile({ profileDetails }) {
             toast({
                 title: "Error",
                 description: "Error In Updating Profile" || error.message,
-                variant: "destructive"
+                variant: "destructive",
             })
         }
     }
@@ -85,22 +101,22 @@ export default function CandidateProfile({ profileDetails }) {
                 id={id}
                 type={type}
                 {...register(id, { required: required ? `${label} is required` : false })}
-                className={`h-10 px-3 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                className={`h-10 px-3 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-black focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                     }`}
                 {...props}
             />
-            {errors[id] && <p className="text-sm text-red-500">{errors[id].message}</p>}
+            {errors[id] && <p className="text-sm text-red-500 mt-1">{errors[id].message}</p>}
         </div>
     )
 
     return (
-        <Card className="w-full max-w-3xl mx-auto bg-white shadow-lg rounded-xl">
-            <CardHeader className="space-y-1 border-b pb-7">
+        <Card className="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-xl border border-gray-200">
+            <CardHeader className="space-y-1 border-b pb-6">
                 <CardTitle className="text-2xl font-bold text-gray-900">Candidate Profile</CardTitle>
                 <CardDescription className="text-gray-500">Share your professional journey with us</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <CardContent className="grid gap-6 pt-6">
+                <CardContent className="grid gap-8 pt-6">
                     <div className="grid gap-6 md:grid-cols-2">
                         <InputField icon={User} label="Name" id="name" />
                         <InputField icon={Mail} label="Email" id="email" type="email" />
@@ -136,16 +152,16 @@ export default function CandidateProfile({ profileDetails }) {
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex justify-end border-t pt-6">
+                <CardFooter className="flex justify-end border-t pt-6 pb-6">
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-colors"
+                        className="px-8 py-2.5 bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 transition-colors"
                     >
                         {isSubmitting ? (
                             <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                Updating...
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <span>Updating...</span>
                             </div>
                         ) : (
                             "Save Profile"

@@ -13,6 +13,6 @@ export default function AfterLogin({ userId }) {
     }, [userId, dispatch])
 
     return (
-        <div>This is After Login Page</div>
+        <div className='text-xl font-serif font-bold text-black'>Please Ignore This Dummy Data, And you can Start Exploring the App.</div>
     )
 }

@@ -5,11 +5,21 @@ import { redirect } from 'next/navigation';
 import { fetchUserDetails } from './actions/detailsActions';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Bell, Briefcase, BookOpen, BarChart2, ChevronRight, Search, LayoutDashboard, FileText, BookOpen as BookIcon } from 'lucide-react';
 
 export default async function Home() {
   const { userId } = await auth();
+
+  const commonStyles = {
+    headerLink:
+      "text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2",
+    button:
+      "inline-flex px-6 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 rounded-lg focus:outline-none focus:bg-gray-600 font-pj hover:bg-gray-600",
+    statText: "text-3xl font-medium text-gray-900 sm:text-4xl font-pj",
+    statLabel: "ml-3 text-sm text-gray-900 font-pj",
+  };
 
   if (userId) {
     const user = await currentUser();
@@ -20,81 +30,110 @@ export default async function Home() {
     } else if (user && profileDetails?._id) {
       return (
         <div className="min-h-screen bg-gray-50">
+          {/* Header Navigation */}
+        
+
           <div className="container mx-auto px-4 py-8 space-y-8">
             {/* Welcome Section */}
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-xl blur-xl"></div>
-              <Card className="relative border-0 shadow-lg">
+              <div className="absolute inset-0 rounded-xl blur-xl"></div>
+              <Card className="relative border-0 shadow-lg overflow-hidden">
+               
+
                 <CardContent className="p-8">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div className="space-y-2">
-                      <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent inline-block [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+                      <h1 className="text-3xl md:text-4xl font-bold text-black inline-block">
                         Welcome Back!
                       </h1>
                       <p className="text-gray-600">Your job search journey continues here</p>
                     </div>
-                    <div className="relative">
+                    <div className="mt-4 md:mt-0 relative">
                       <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-md"></div>
                       <Image
                         src="/assets/profile-welcome.svg"
                         alt="Profile"
                         width={80}
                         height={80}
-                        className="relative rounded-full border-2 border-blue-500/30 p-1"
+                        className="relative rounded-full border-2 border-black p-1"
                       />
                     </div>
                   </div>
-                  <div className="mt-8">
+
+                  <div className="mt-8 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
                     <AfterLogin userId={userId} />
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[
+                      { label: 'Applied Jobs', value: '24', icon: <Briefcase className="w-4 h-4 text-blue-500" /> },
+                      { label: 'Interviews', value: '5', icon: <Bell className="w-4 h-4 text-purple-500" /> },
+                      { label: 'Saved Jobs', value: '12', icon: <BookIcon className="w-4 h-4 text-pink-500" /> },
+                      { label: 'Profile Views', value: '86', icon: <BarChart2 className="w-4 h-4 text-indigo-500" /> }
+                    ].map((stat, index) => (
+                      <div key={index} className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                            {stat.icon}
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">{stat.label}</p>
+                            <p className="text-xl font-bold">{stat.value}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
             </div>
 
             {/* Dashboard Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  title: 'Job Matches',
-                  description: 'Find perfectly matched jobs based on your profile',
-                  icon: '/assets/job-match.svg',
-                  gradient: 'from-blue-500/10 to-blue-600/10'
-                },
-                {
-                  title: 'Applications',
-                  description: 'Track all your job applications in one place',
-                  icon: '/assets/applications.svg',
-                  gradient: 'from-purple-500/10 to-purple-600/10'
-                },
-                {
-                  title: 'Career Tips',
-                  description: 'Get expert advice to advance your career',
-                  icon: '/assets/career-tips.svg',
-                  gradient: 'from-pink-500/10 to-pink-600/10'
-                }
-              ].map((item, index) => (
-                <Card
-                  key={index}
-                  className="group hover:shadow-lg transition-all duration-300 border-0 relative overflow-hidden"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                  <CardContent className="relative p-6 space-y-4">
-                    <div className="h-40 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <Image
-                        src={item.icon}
-                        alt={item.title}
-                        width={160}
-                        height={160}
-                        className="object-contain"
-                      />
+           
+
+            {/* Recent Activity Section */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold">Recent Activity</h2>
+                <Button variant="ghost" className="text-blue-600 hover:text-blue-800 font-medium">
+                  View All <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    title: 'Application Submitted',
+                    company: 'Senior Developer at TechCorp',
+                    time: '2 hours ago',
+                    icon: <FileText className="w-4 h-4 text-blue-500" />
+                  },
+                  {
+                    title: 'Profile Updated',
+                    company: 'Added new skills and experience',
+                    time: 'Yesterday',
+                    icon: <BookIcon className="w-4 h-4 text-green-500" />
+                  },
+                  {
+                    title: 'Interview Scheduled',
+                    company: 'Product Manager at InnovateLabs',
+                    time: '3 days ago',
+                    icon: <Bell className="w-4 h-4 text-purple-500" />
+                  }
+                ].map((activity, index) => (
+                  <div key={index} className="flex items-start p-4 border border-gray-100 rounded-lg hover:bg-gray-50">
+                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                      {activity.icon}
                     </div>
-                    <div>
-                      <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
-                      <p className="text-gray-600">{item.description}</p>
+                    <div className="flex-1">
+                      <h3 className="font-medium">{activity.title}</h3>
+                      <p className="text-gray-500 text-sm">{activity.company}</p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <div className="text-gray-400 text-xs">{activity.time}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -103,103 +142,75 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="lg:w-1/2 space-y-6">
-            <h1 className="text-5xl font-bold leading-tight">
-              Find Your Dream Job
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent inline-block [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-                Build Your Future
-              </span>
-            </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              Connect with top employers and take the next step in your career journey.
-              Join thousands of professionals finding their perfect match.
-            </p>
-            <div className="flex gap-4 pt-4">
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                Get Started <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-blue-600 text-blue-600 hover:bg-blue-50"
-              >
-                Learn More
-              </Button>
+    <div className='bg-gray-50'>
+      <section className="pt-12 pb-12 sm:pb-16 lg:pt-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
+            <div>
+              <div className="text-center lg:text-left">
+                <h1 className="text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl font-pj">
+                  Find Your Dream Job Build Your Future.
+                </h1>
+                <p className="mt-2 text-lg text-gray-600 sm:mt-8 font-inter">
+                  Connect with top employers and take the next step in your career journey.
+                  Join thousands of professionals finding their perfect match.
+                </p>
+
+                <form action="#" method="POST" className="mt-8 sm:mt-10">
+                  <div className="relative p-2 sm:border sm:border-gray-400 group sm:rounded-xl sm:focus-within:ring-1 sm:focus-within:ring-gray-900 sm:focus-within:border-gray-900">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      placeholder="Enter email for Job Updates"
+                      className="block w-full px-4 py-4 text-gray-900 placeholder-gray-900 bg-transparent border border-gray-400 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 rounded-xl sm:border-none sm:focus:ring-0 sm:focus:border-transparent"
+                    />
+                    <div className="mt-4 sm:mt-0 sm:absolute sm:inset-y-0 sm:right-0 sm:flex sm:items-center sm:pr-2">
+                      <button type="submit" className={commonStyles.button}>
+                        Get Updates
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div className="flex items-center justify-center mt-10 space-x-6 lg:justify-start sm:space-x-8">
+                <div className="flex items-center">
+                  <p className={commonStyles.statText}>5K+</p>
+                  <p className={commonStyles.statLabel}>
+                    New
+                    <br />
+                    Jobs
+                  </p>
+                </div>
+
+                <div className="hidden sm:block">
+                  <p className="text-gray-400">{"//////////"}</p>
+                </div>
+
+                <div className="flex items-center">
+                  <p className={commonStyles.statText}>$10M+</p>
+                  <p className={commonStyles.statLabel}>
+                    Sales
+                    <br />
+                    Achieved
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="lg:w-1/2">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl opacity-20 blur-2xl"></div>
+
+            <div>
               <Image
-                src="/assets/undraw_job-hunt_5umi.svg"
-                alt="Job Search"
+                className="w-full rounded-lg"
+                src="/assets/new.avif"
+                alt="Fashion Style"
+                height={700}
                 width={600}
-                height={400}
-                className="relative rounded-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
         </div>
-
-        {/* How It Works Section */}
-        <div className="mt-32 text-center">
-          <h2 className="text-3xl font-bold mb-16">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                step: 1,
-                title: 'Create Profile',
-                description: 'Build your professional profile in minutes',
-                icon: '/assets/create-profile.svg',
-                gradient: 'from-blue-500 to-blue-600'
-              },
-              {
-                step: 2,
-                title: 'Search Jobs',
-                description: 'Browse thousands of relevant opportunities',
-                icon: '/assets/search-jobs.svg',
-                gradient: 'from-purple-500 to-purple-600'
-              },
-              {
-                step: 3,
-                title: 'Get Hired',
-                description: 'Apply and land your dream job',
-                icon: '/assets/get-hired.svg',
-                gradient: 'from-pink-500 to-pink-600'
-              }
-            ].map((item, index) => (
-              <Card
-                key={index}
-                className="group hover:shadow-xl transition-all duration-300 border-0 relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <CardContent className="relative p-8 space-y-6">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${item.gradient} text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto transform group-hover:scale-110 transition-transform duration-300`}>
-                    {item.step}
-                  </div>
-                  <div className="h-32 flex items-center justify-center">
-                    <Image
-                      src={item.icon}
-                      alt={item.title}
-                      width={120}
-                      height={120}
-                      className="transform group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                    <p className="text-gray-600">{item.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }
