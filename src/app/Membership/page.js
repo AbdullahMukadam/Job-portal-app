@@ -9,7 +9,7 @@ export default async function MembershipPage() {
 
   const profileDetails = await fetchUserDetails(userId)
   return (
-    <div className='w-full h-full p-2'>
+    <div className='w-full h-full'>
       <MembershipComponent profileDetails={profileDetails} />
     </div>
   )

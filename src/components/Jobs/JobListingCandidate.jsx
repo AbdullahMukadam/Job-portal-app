@@ -88,8 +88,8 @@ export default function JobListingCandidate({
             <CardHeader className="pb-4">
                 <div className="flex justify-between items-start">
                     <div>
-                        <CardTitle className="text-2xl font-bold text-gray-900">{job.title}</CardTitle>
-                        <p className="text-lg text-gray-600 mt-1">{job.CompanyName}</p>
+                        <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">{job.title}</CardTitle>
+                        <p className="text-lg text-gray-600 dark:text-white mt-1">{job.CompanyName}</p>
                     </div>
                     <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-300 font-medium px-3 py-1">
                         {job.type}
@@ -98,29 +98,29 @@ export default function JobListingCandidate({
             </CardHeader>
             <CardContent className="space-y-5 pt-2">
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                        <MapPin className="mr-2 h-4 w-4 text-gray-500" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-white">
+                        <MapPin className="mr-2 h-4 w-4 text-gray-500 dark:text-white" />
                         {job.location}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                        <Calendar className="mr-2 h-4 w-4 text-gray-500" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-white">
+                        <Calendar className="mr-2 h-4 w-4 text-gray-500 dark:text-white" />
                         Posted {new Date(job.createdAt).toLocaleDateString()}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                        <DollarSign className="mr-2 h-4 w-4 text-gray-500" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-white">
+                        <DollarSign className="mr-2 h-4 w-4 text-gray-500 dark:text-white" />
                         {job.salary || "Salary not specified"}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                        <Clock className="mr-2 h-4 w-4 text-gray-500" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-white">
+                        <Clock className="mr-2 h-4 w-4 text-gray-500 dark:text-white" />
                         {job.type || "Full-time"}
                     </div>
                 </div>
                 <div className="pt-1">
-                    <h4 className="font-semibold mb-2 text-gray-900">Job Description:</h4>
-                    <p className="text-sm text-gray-700 leading-relaxed">{job.description}</p>
+                    <h4 className="font-semibold mb-2 text-gray-900 dark:text-white">Job Description:</h4>
+                    <p className="text-sm text-gray-700 dark:text-white leading-relaxed">{job.description}</p>
                 </div>
                 <div className="pt-1">
-                    <h4 className="font-semibold mb-2 text-gray-900">Required Skills:</h4>
+                    <h4 className="font-semibold mb-2 text-gray-900 dark:text-white">Required Skills:</h4>
                     <div className="flex flex-wrap gap-2">
                         {job.skills.split(",").map((skill, index) => (
                             <Badge key={index} variant="outline" className="bg-gray-50 text-gray-800 border-gray-300">
@@ -131,7 +131,7 @@ export default function JobListingCandidate({
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between items-center pt-2 pb-4 border-t border-gray-100">
-                <div className="flex items-center text-sm text-gray-600">
+                <div className="flex items-center text-sm text-gray-600 dark:text-white">
                     <Briefcase className="mr-2 h-4 w-4 text-gray-500" />
                     {job.applicants.length} applicant(s)
                 </div>

@@ -65,14 +65,14 @@ export default function RecruiterProfile({ profileDetails }) {
 
     const InputField = ({ icon: Icon, label, id, ...props }) => (
         <div className="space-y-2">
-            <Label htmlFor={id} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <Label htmlFor={id} className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                 <Icon className="w-4 h-4" />
                 {label}
             </Label>
             <Input
                 id={id}
                 {...register(id, { required: `${label} is required` })}
-                className={`h-11 px-4 py-2 bg-white border rounded-lg transition-all focus:ring-2 focus:ring-black focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                className={`h-11 px-4 py-2 bg-white dark:bg-zinc-900 border rounded-lg transition-all focus:ring-2 focus:ring-black focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                     }`}
                 {...props}
             />
@@ -81,18 +81,18 @@ export default function RecruiterProfile({ profileDetails }) {
     )
 
     return (
-        <Card className="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-xl border border-gray-200">
+        <Card className="w-full max-w-3xl mx-auto bg-white dark:bg-zinc-900 shadow-xl rounded-xl border border-gray-200">
             <CardHeader className="space-y-2 border-b pb-6">
                 <div className="flex items-center">
-                    <CardTitle className="text-2xl font-bold text-gray-900">Recruiter Profile</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Recruiter Profile</CardTitle>
                     {isSaved && (
-                        <div className="ml-auto flex items-center text-sm text-gray-700 gap-1.5">
-                            <CheckCircle className="w-4 h-4 text-black" />
+                        <div className="ml-auto flex items-center text-sm text-gray-700 gap-1.5 dark:text-white">
+                            <CheckCircle className="w-4 h-4 text-black dark:text-white" />
                             <span>Changes saved</span>
                         </div>
                     )}
                 </div>
-                <CardDescription className="text-gray-500">
+                <CardDescription className="text-gray-500 dark:text-gray-300">
                     Complete your profile to enhance your recruiting experience
                 </CardDescription>
             </CardHeader>

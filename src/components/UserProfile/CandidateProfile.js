@@ -93,7 +93,7 @@ export default function CandidateProfile({ profileDetails }) {
 
     const InputField = ({ icon: Icon, label, id, type = "text", required = true, ...props }) => (
         <div className="space-y-2">
-            <Label htmlFor={id} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+            <Label htmlFor={id} className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                 <Icon className="w-4 h-4" />
                 {label}
             </Label>
@@ -101,7 +101,7 @@ export default function CandidateProfile({ profileDetails }) {
                 id={id}
                 type={type}
                 {...register(id, { required: required ? `${label} is required` : false })}
-                className={`h-10 px-3 py-2 bg-white border rounded-lg focus:ring-2 focus:ring-black focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                className={`h-10 px-3 py-2 bg-white dark:bg-zinc-900 border rounded-lg focus:ring-2 focus:ring-black focus:border-transparent ${errors[id] ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                     }`}
                 {...props}
             />
@@ -110,10 +110,10 @@ export default function CandidateProfile({ profileDetails }) {
     )
 
     return (
-        <Card className="w-full max-w-3xl mx-auto bg-white shadow-xl rounded-xl border border-gray-200">
+        <Card className="w-full max-w-3xl mx-auto bg-white dark:bg-zinc-900 shadow-xl rounded-xl border border-gray-200">
             <CardHeader className="space-y-1 border-b pb-6">
-                <CardTitle className="text-2xl font-bold text-gray-900">Candidate Profile</CardTitle>
-                <CardDescription className="text-gray-500">Share your professional journey with us</CardDescription>
+                <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Candidate Profile</CardTitle>
+                <CardDescription className="text-gray-500 dark:text-gray-300">Share your professional journey with us</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <CardContent className="grid gap-8 pt-6">

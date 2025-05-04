@@ -134,7 +134,7 @@ export default function MembershipComponent({ profileDetails }) {
 
 
     return (
-        <div className='w-full min-h-screen bg-gray-50 py-8'>
+        <div className='w-full min-h-screen bg-gray-50 py-8 dark:bg-zinc-950'>
             {visible && <UpgradeBanner
                 buttonText='Important Note :'
                 description="Payments are in Test Mode, Please Dont Enter Your Real CARD Details."
@@ -143,8 +143,8 @@ export default function MembershipComponent({ profileDetails }) {
             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
                 {/* Header Section */}
                 <div className='text-center mb-12'>
-                    <h1 className='text-4xl font-bold text-gray-900 mb-4'>Choose Your Plan</h1>
-                    <p className='text-lg text-gray-600 max-w-2xl mx-auto'>
+                    <h1 className='text-4xl font-bold text-gray-900 mb-4 dark:text-white'>Choose Your Plan</h1>
+                    <p className='text-lg text-gray-600 max-w-2xl mx-auto dark:text-orange-600'>
                         {ProfileRole === "candidate"
                             ? "Select the perfect plan to boost your job search"
                             : "Choose the ideal plan for your recruitment needs"
@@ -154,16 +154,16 @@ export default function MembershipComponent({ profileDetails }) {
 
                 {/* Membership Control */}
                 {profileDetails?.isPremiumUser && (
-                    <div className='max-w-3xl mx-auto mb-8 p-4 bg-white rounded-lg shadow-sm border border-gray-200'>
+                    <div className='max-w-3xl mx-auto mb-8 p-4 bg-white dark:bg-orange-600 rounded-lg shadow-sm border border-gray-200'>
                         <div className='flex justify-between items-center'>
                             <div>
-                                <h2 className='text-lg font-semibold text-gray-900'>Current Plan: {profileDetails.membershipType}</h2>
-                                <p className='text-sm text-gray-600'>Your premium membership is active</p>
+                                <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>Current Plan: {profileDetails.membershipType}</h2>
+                                <p className='text-sm text-gray-600 dark:text-gray-300'>Your premium membership is active</p>
                             </div>
                             <Button
                                 onClick={handleCancelMembership}
                                 variant="outline"
-                                className='border-red-500 text-red-500 hover:bg-red-50'
+                                className='border-red-500 text-red-500 hover:bg-red-800'
                             >
                                 Cancel Membership
                             </Button>
@@ -182,7 +182,7 @@ export default function MembershipComponent({ profileDetails }) {
 
 
                 <div className='mt-16 text-center'>
-                    <p className='text-sm text-gray-600'>
+                    <p className='text-sm text-gray-600 dark:text-white'>
                         All plans include access to our basic features. Upgrade anytime to unlock more capabilities.
                     </p>
                 </div>

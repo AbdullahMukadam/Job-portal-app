@@ -32,15 +32,15 @@ export default function Page() {
       </div>
 
       {/* Right side - Sign Up Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-gray-50 dark:bg-zinc-950">
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="mb-8 text-center">
             <div className="h-16 w-16 inline-flex items-center justify-center mb-4">
               <img src="/assets/logo-job.jpg" alt="Company Logo" className="w-full h-full object-contain" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800">Create your account</h2>
-            <p className="text-gray-500 mt-2">Join thousands of users worldwide</p>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Create your account</h2>
+            <p className="text-gray-500 mt-2 dark:text-white">Join thousands of users worldwide</p>
           </div>
 
           {/* Sign-up component with custom styling container */}
@@ -49,7 +49,7 @@ export default function Page() {
          
 
           {/* Help links */}
-          <div className="mt-8 text-center">
+          {/* <div className="mt-8 text-center">
            
             <p className="text-gray-500 text-sm mt-2">
               <a href="#" className="hover:text-indigo-600">
@@ -60,7 +60,7 @@ export default function Page() {
                 Privacy Policy
               </a>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

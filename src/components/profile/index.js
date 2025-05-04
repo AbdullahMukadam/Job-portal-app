@@ -54,7 +54,7 @@ export default function ProfileComponent({ ProfileInfo }) {
   }
 
   return (
-    <div className="w-full min-h-screen p-4 bg-white">
+    <div className="w-full min-h-screen p-4 bg-white dark:bg-zinc-950">
       <Card className="w-full max-w-3xl mx-auto shadow-sm border border-gray-200 rounded-lg overflow-hidden">
         <CardHeader className="bg-black p-6">
           <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -76,41 +76,41 @@ export default function ProfileComponent({ ProfileInfo }) {
 
         <CardContent className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center text-gray-800">
-              <GraduationCap className="mr-3 h-5 w-5 text-gray-600" />
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <GraduationCap className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <span>{CandidateInfo.College}, {CandidateInfo.GraduatedYear}</span>
             </div>
-            <div className="flex items-center text-gray-800">
-              <Briefcase className="mr-3 h-5 w-5 text-gray-600" />
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <Briefcase className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <span>{CandidateInfo.TotalExperience} years experience</span>
             </div>
-            <div className="flex items-center text-gray-800">
-              <MapPin className="mr-3 h-5 w-5 text-gray-600" />
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <MapPin className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <span>{CandidateInfo.PreferedJobLocation}</span>
             </div>
             <Button
               onClick={handleResumeView}
               variant="outline"
-              className="border-gray-300 hover:bg-gray-100 text-gray-800"
+              className="border-gray-300 hover:bg-gray-800 text-gray-800 dark:text-white"
             >
               View Resume
             </Button>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Contact Information</h3>
-            <div className="flex items-center text-gray-800">
-              <Mail className="mr-3 h-5 w-5 text-gray-600" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white border-b pb-2">Contact Information</h3>
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <Mail className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <a href={`mailto:${email}`} className="hover:underline">{email}</a>
             </div>
-            <div className="flex items-center text-gray-800">
-              <Github className="mr-3 h-5 w-5 text-gray-600" />
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <Github className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <a href={CandidateInfo.GithubProfile} target="_blank" rel="noopener noreferrer" className="hover:underline">
                 GitHub Profile
               </a>
             </div>
-            <div className="flex items-center text-gray-800">
-              <Linkedin className="mr-3 h-5 w-5 text-gray-600" />
+            <div className="flex items-center text-gray-800 dark:text-white">
+              <Linkedin className="mr-3 h-5 w-5 text-gray-600 dark:text-white" />
               <a href={CandidateInfo.LinkedInProfile} target="_blank" rel="noopener noreferrer" className="hover:underline">
                 LinkedIn Profile
               </a>
@@ -118,7 +118,7 @@ export default function ProfileComponent({ ProfileInfo }) {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-3">Skills</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white border-b pb-2 mb-3">Skills</h3>
             <div className="flex flex-wrap gap-2">
               {CandidateInfo.Skills.split(',').map((skill, index) => (
                 <Badge
@@ -133,7 +133,7 @@ export default function ProfileComponent({ ProfileInfo }) {
           </div>
         </CardContent>
 
-        <CardFooter className="p-6 bg-gray-50 border-t flex flex-col md:flex-row items-center justify-between gap-4">
+        <CardFooter className="p-6 bg-gray-50 dark:bg-black border-t flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex gap-3">
             <Button
               onClick={handleSelectforJob}

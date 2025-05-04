@@ -2,6 +2,7 @@
 import { SignIn } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 
+
 export default function Page() {
   const [mounted, setMounted] = useState(false);
 
@@ -42,24 +43,26 @@ export default function Page() {
       </div>
 
       {/* Right side - Sign In Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-gray-50 dark:bg-zinc-950">
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="mb-8 text-center">
             <div className="h-16 w-16 inline-flex items-center justify-center mb-4">
               <img src="/assets/logo-job.jpg" alt="Company Logo" className="w-full h-full object-contain" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800">Sign in to your account</h2>
-            <p className="text-gray-500 mt-2">Enter your credentials to access your account</p>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Sign in to your account</h2>
+            <p className="text-gray-500 mt-2 dark:text-white">Enter your credentials to access your account</p>
           </div>
 
           {/* Sign-in component with custom styling container */}
 
-          {mounted && <SignIn />}
+          {mounted && <SignIn 
+          
+          />}
 
 
           {/* Help links */}
-          <div className="mt-8 text-center">
+         {/*  <div className="mt-8 text-center">
 
             <p className="text-gray-500 text-sm mt-2">
               <a href="#" className="hover:text-indigo-600">
@@ -70,7 +73,7 @@ export default function Page() {
                 Help & Support
               </a>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

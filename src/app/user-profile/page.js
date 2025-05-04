@@ -10,7 +10,7 @@ const UserProfilePage = async () => {
     const profileDetails = await fetchUserDetails(userId)
 
     return (
-        <div className='w-full h-full p-2 flex items-center justify-center'>
+        <div className='w-full h-full flex items-center justify-center'>
             <UserProfile profileDetails={profileDetails} />
         </div>
     )

@@ -172,14 +172,14 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
             {visible && <UpgradeBanner
                 buttonText='Important Note :'
                 description="The Location, Company and Search Doesnt work, Only The Filter Button Works"
                 onClose={() => setvisible(false)}
             />}
             {/* Search Section */}
-            <div className="w-full bg-white shadow-sm border-b">
+            <div className="w-full bg-white dark:bg-zinc-900 shadow-sm border-b">
                 <div className="max-w-7xl mx-auto p-6">
                     <div className="flex flex-wrap gap-4 items-center">
                         <div className="flex-1 min-w-[200px]">
@@ -187,7 +187,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                                 <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
                                 <Input
                                     placeholder="Search by role"
-                                    className="pl-10 bg-gray-50"
+                                    className="pl-10 bg-gray-50 dark:bg-zinc-900"
                                 />
                             </div>
                         </div>
@@ -196,7 +196,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                                 <MapPin className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
                                 <Input
                                     placeholder="Location"
-                                    className="pl-10 bg-gray-50"
+                                    className="pl-10 bg-gray-50 dark:bg-zinc-900"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
                                 />
@@ -207,7 +207,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                                 <Briefcase className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
                                 <Input
                                     placeholder="Company"
-                                    className="pl-10 bg-gray-50"
+                                    className="pl-10 bg-gray-50 dark:bg-zinc-900"
                                     value={companyname}
                                     onChange={(e) => setcompanyname(e.target.value)}
                                 />
@@ -234,7 +234,7 @@ const JobsComponent = ({ profileDetails, recruiterJobs }) => {
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-xl font-semibold">
                         {profileDetails?.role === "candidate" ? (
-                            <>Recommended jobs <span className="text-sm bg-gray-100 px-2 py-1 rounded-full">{filterJobs.length}</span></>
+                            <>Recommended jobs <span className="text-sm bg-gray-100 dark:text-black px-2 py-1 rounded-full">{filterJobs.length}</span></>
                         ) : (
                             "Jobs Dashboard"
                         )}

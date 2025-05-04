@@ -84,16 +84,16 @@ export function PricingCard({ title, description, price, features, profileDetail
 
 
     return (
-        <div className="divide-y divide-gray-200 rounded-2xl border border-gray-200 shadow-sm">
+        <div className="divide-y dark:bg-zinc-900 divide-gray-200 rounded-2xl border border-gray-200 shadow-sm">
             <div className="p-6 sm:px-8">
                 <h2 className="text-lg font-medium text-gray-900">
                     {title}
-                    <span className="sr-only">Plan</span>
+                    <span className="sr-only dark:text-white">Plan</span>
                 </h2>
-                <p className="mt-2 text-gray-700">{description}</p>
+                <p className="mt-2 text-gray-700 dark:text-white">{description}</p>
                 <p className="mt-2 sm:mt-4">
-                    <strong className="text-3xl font-bold text-gray-900 sm:text-4xl">₹{price}</strong>
-                    <span className="text-sm font-medium text-gray-700">/month</span>
+                    <strong className="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-orange-600">₹{price}</strong>
+                    <span className="text-sm font-medium text-gray-700 dark:text-white">/month</span>
                 </p>
                 <Button
                     className={`mt-4 w-full ${profileDetails?.membershipType === title ? "bg-white border-2 border-blue-600 text-black" : ""}`}
@@ -119,7 +119,7 @@ export function PricingCard({ title, description, price, features, profileDetail
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-center gap-1">
                             {feature.included ? <CheckIcon /> : <XIcon />}
-                            <span className="text-gray-700">{feature.name}</span>
+                            <span className="text-gray-700 dark:text-white">{feature.name}</span>
                         </li>
                     ))}
                 </ul>

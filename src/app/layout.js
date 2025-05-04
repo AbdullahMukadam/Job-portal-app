@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import CommonLayout from "@/common-layout";
 import SkeletonDemo from "./loading";
 import { ThemeProvider } from "@/components/ThemeProvider/themeProvider";
+import { dark, neobrutalism } from '@clerk/themes'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: [dark, neobrutalism],
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}

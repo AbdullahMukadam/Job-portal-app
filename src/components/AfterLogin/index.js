@@ -13,6 +13,6 @@ export default function AfterLogin({ userId }) {
     }, [userId, dispatch])
 
     return (
-        <div className='text-xl font-serif font-bold text-black'>Please Ignore This Dummy Data, And you can Start Exploring the App.</div>
+        <div className='text-xl font-serif font-bold text-black dark:text-white'>Please Ignore This Dummy Data, And you can Start Exploring the App.</div>
     )
 }
