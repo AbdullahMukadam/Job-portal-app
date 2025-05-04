@@ -44,7 +44,7 @@ export default function ActivityComponent() {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredApplications.map((app) => (
-                    <CommonCardActivity key={`${app.JobId}-${app.applicantData.userId}`} application={app} />
+                    <CommonCardActivity key={`${app.jobId}`} application={app} />
                 ))}
             </div>
         )

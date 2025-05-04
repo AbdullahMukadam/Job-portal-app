@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 export default function Page() {
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -14,17 +14,17 @@ export default function Page() {
       {/* Left side - Image with overlay text */}
       <div className="hidden lg:flex lg:w-1/2 relative text-white">
         {/* Background image */}
-        <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: "url('/assets/new.avif')"}}></div>
-        
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/assets/new.avif')" }}></div>
+
         {/* Gradient overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/90 to-indigo-700/70"></div>
-        
+
         {/* Content positioned over the image */}
         <div className="relative z-10 p-12 flex items-center justify-center w-full">
           <div className="max-w-lg">
             <h1 className="text-4xl font-bold mb-4">Welcome to Platform</h1>
             <p className="text-indigo-100 text-lg mb-8">Securely access your account and manage your experience with our powerful dashboard.</p>
-            
+
             {/* Testimonials/Social proof */}
             <div className="mt-12">
               <div className="flex items-center mb-6">
@@ -40,7 +40,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      
+
       {/* Right side - Sign In Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 bg-gray-50">
         <div className="w-full max-w-md">
@@ -52,15 +52,15 @@ export default function Page() {
             <h2 className="text-2xl font-bold text-gray-800">Sign in to your account</h2>
             <p className="text-gray-500 mt-2">Enter your credentials to access your account</p>
           </div>
-          
+
           {/* Sign-in component with custom styling container */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            {mounted && <SignIn />}
-          </div>
-          
+
+          {mounted && <SignIn />}
+
+
           {/* Help links */}
           <div className="mt-8 text-center">
-           
+
             <p className="text-gray-500 text-sm mt-2">
               <a href="#" className="hover:text-indigo-600">
                 Forgot password?

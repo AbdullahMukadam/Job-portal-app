@@ -65,15 +65,15 @@ export function DrawerDemo({ drawerOpen, setDrawerOpen, job }) {
                         job.applicants.map((applicant) => (
                             <Card key={applicant.applicantData.userId}>
                                 <CardHeader>
-                                    <CardTitle>{applicant.applicantData?.details?.Name || "Name Not Provided"}</CardTitle> {/* Optional chaining */}
+                                    <CardTitle>{applicant.applicantData?.details?.Name || "Name Not Provided"}</CardTitle> 
                                     <CardDescription>
                                         Applied Date: {new Date(applicant.applicantData.applicationDate).toLocaleDateString()}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="w-full p-1">
-                                    <div className="w-full p-2 flex items-center justify-between">
-                                        <h2 className="text-bold">{applicant.applicantData.email}</h2>
-                                        <Link href={`/Profile/${applicant.applicantData.userId}`}>View Profile</Link>
+                                    <div className="w-full p-2 flex flex-col gap-2 lg:flex-row items-center justify-between">
+                                        <h2 className="text-bold sm:text-[10px]">{applicant.applicantData.email}</h2>
+                                        <Link className="p-2 rounded-md bg-black text-white text-[10px]" href={`/Profile/${applicant.applicantData.userId}`}>View Profile</Link>
                                     </div>
                                 </CardContent>
                             </Card>

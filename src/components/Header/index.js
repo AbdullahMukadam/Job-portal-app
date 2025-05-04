@@ -10,6 +10,8 @@ import { useClerk, UserButton, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { login, logout } from '@/app/Slices/AuthSlice';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
+import { Moon, Sun } from "lucide-react"
 
 const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails, isMobile = false }) => {
     const items = [
@@ -63,11 +65,13 @@ const NavItems = ({ className = '', onClick = () => { }, authStatus, userDetails
 export default function Header({ userDetails }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [currentTheme, setcurrentTheme] = useState("dark")
     const authStatus = useSelector((state) => state.auth.status);
     const { signOut } = useClerk();
     const { user, isLoaded } = useUser();
     const router = useRouter();
     const dispatch = useDispatch();
+    const { setTheme } = useTheme()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -98,10 +102,15 @@ export default function Header({ userDetails }) {
         }
     };
 
+    const updateCurrentTheme = (theme) => {
+        setcurrentTheme(theme)
+        theme === "dark" ? setTheme("dark") : setTheme("light")
+    }
+
     return (
         <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled
-                ? 'bg-white/80 backdrop-blur-lg border-b shadow-sm'
-                : 'bg-white'
+            ? 'bg-white/80 backdrop-blur-lg border-b shadow-sm'
+            : 'bg-white'
             }`}>
             <div className="container mx-auto">
                 <div className="flex h-16 items-center justify-between px-4">
@@ -120,6 +129,15 @@ export default function Header({ userDetails }) {
                         <nav className="hidden md:flex items-center gap-1">
                             <NavItems authStatus={authStatus} userDetails={userDetails} />
                         </nav>
+
+                        <Button className="hidden md:block" onClick={() => currentTheme === "dark" ? updateCurrentTheme("light") : updateCurrentTheme("dark")}>
+                            {currentTheme === "dark" ?
+                                <Moon className=" h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                : <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />}
+                        </Button>
+
+
+
                     </div>
 
                     {/* Mobile Menu */}
@@ -180,6 +198,6 @@ export default function Header({ userDetails }) {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     );
 }

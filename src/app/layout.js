@@ -5,6 +5,7 @@ import { Suspense } from "react";
 
 import CommonLayout from "@/common-layout";
 import SkeletonDemo from "./loading";
+import { ThemeProvider } from "@/components/ThemeProvider/themeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,15 +37,22 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 
         >
-          <div className="min-h-screen flex flex-col items-center">
-            <main className="w-full max-w-7xl mx-auto">
-              <Suspense fallback={<SkeletonDemo />}>
-                <CommonLayout>
-                  {children}
-                </CommonLayout>
-              </Suspense>
-            </main>
-          </div>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+          >
+            <div className="min-h-screen flex flex-col items-center">
+              <main className="w-full max-w-7xl mx-auto">
+                <Suspense fallback={<SkeletonDemo />}>
+                  <CommonLayout>
+                    {children}
+                  </CommonLayout>
+                </Suspense>
+              </main>
+            </div>
+          </ThemeProvider>
+
 
         </body>
       </html>

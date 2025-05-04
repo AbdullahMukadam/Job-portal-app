@@ -48,16 +48,7 @@ export default async function Home() {
                       </h1>
                       <p className="text-gray-600">Your job search journey continues here</p>
                     </div>
-                    <div className="mt-4 md:mt-0 relative">
-                      <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-md"></div>
-                      <Image
-                        src="/assets/profile-welcome.svg"
-                        alt="Profile"
-                        width={80}
-                        height={80}
-                        className="relative rounded-full border-2 border-black p-1"
-                      />
-                    </div>
+                    
                   </div>
 
                   <div className="mt-8 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">

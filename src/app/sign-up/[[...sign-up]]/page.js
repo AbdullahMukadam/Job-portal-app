@@ -44,9 +44,9 @@ export default function Page() {
           </div>
 
           {/* Sign-up component with custom styling container */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          
             {mounted && <SignUp />}
-          </div>
+         
 
           {/* Help links */}
           <div className="mt-8 text-center">
