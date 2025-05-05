@@ -30,104 +30,10 @@ export default async function Home() {
     } else if (user && profileDetails?._id) {
       return (
         <div className="min-h-screen dark:bg-zinc-950 bg-gray-50">
-          {/* Header Navigation */}
-        
-
-          <div className="container mx-auto px-4 py-8 space-y-8">
-            {/* Welcome Section */}
-            <div className="relative">
-              <div className="absolute inset-0 rounded-xl blur-xl"></div>
-              <Card className="relative border border-gray-100 shadow-lg  overflow-hidden dark:bg-zinc-900">
-               
-
-                <CardContent className="p-8">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div className="space-y-2">
-                      <h1 className="text-3xl md:text-4xl font-bold text-black inline-block dark:text-white">
-                        Welcome Back!
-                      </h1>
-                      <p className="text-gray-600 dark:text-gray-300">Your job search journey continues here</p>
-                    </div>
-                    
-                  </div>
-
-                  <div className="mt-8 p-4 bg-white dark:bg-zinc-900 rounded-lg border border-gray-500 shadow-sm">
-                    <AfterLogin userId={userId} />
-                  </div>
-
-                  {/* Quick Stats */}
-                  <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                      { label: 'Applied Jobs', value: '24', icon: <Briefcase className="w-4 h-4 text-blue-500" /> },
-                      { label: 'Interviews', value: '5', icon: <Bell className="w-4 h-4 text-purple-500" /> },
-                      { label: 'Saved Jobs', value: '12', icon: <BookIcon className="w-4 h-4 text-pink-500" /> },
-                      { label: 'Profile Views', value: '86', icon: <BarChart2 className="w-4 h-4 text-indigo-500" /> }
-                    ].map((stat, index) => (
-                      <div key={index} className="bg-white p-4 rounded-lg border border-gray-500 shadow-sm dark:bg-zinc-900">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                            {stat.icon}
-                          </div>
-                          <div>
-                            <p className="text-sm text-gray-500 dark:text-white">{stat.label}</p>
-                            <p className="text-xl font-bold">{stat.value}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Dashboard Cards */}
-           
-
-            {/* Recent Activity Section */}
-            <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold">Recent Activity</h2>
-                <Button variant="ghost" className="text-blue-600 hover:text-blue-800 font-medium">
-                  View All <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-
-              <div className="space-y-4">
-                {[
-                  {
-                    title: 'Application Submitted',
-                    company: 'Senior Developer at TechCorp',
-                    time: '2 hours ago',
-                    icon: <FileText className="w-4 h-4 text-blue-500" />
-                  },
-                  {
-                    title: 'Profile Updated',
-                    company: 'Added new skills and experience',
-                    time: 'Yesterday',
-                    icon: <BookIcon className="w-4 h-4 text-green-500" />
-                  },
-                  {
-                    title: 'Interview Scheduled',
-                    company: 'Product Manager at InnovateLabs',
-                    time: '3 days ago',
-                    icon: <Bell className="w-4 h-4 text-purple-500" />
-                  }
-                ].map((activity, index) => (
-                  <div key={index} className="flex items-start p-4 border border-gray-100 rounded-lg hover:bg-gray-900">
-                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-4">
-                      {activity.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium">{activity.title}</h3>
-                      <p className="text-gray-500 text-sm">{activity.company}</p>
-                    </div>
-                    <div className="text-gray-400 text-xs">{activity.time}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="mt-2 p-4 bg-white dark:bg-zinc-950 rounded-lg shadow-sm">
+            <AfterLogin userId={userId} />
           </div>
-        </div>
+        </div >
       );
     }
   }
