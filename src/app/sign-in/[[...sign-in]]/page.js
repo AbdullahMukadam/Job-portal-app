@@ -47,9 +47,7 @@ export default function Page() {
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="mb-8 text-center">
-            <div className="h-16 w-16 inline-flex items-center justify-center mb-4">
-              <img src="/assets/logo-job.jpg" alt="Company Logo" className="w-full h-full object-contain" />
-            </div>
+           
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Sign in to your account</h2>
             <p className="text-gray-500 mt-2 dark:text-white">Enter your credentials to access your account</p>
           </div>

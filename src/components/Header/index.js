@@ -119,11 +119,11 @@ export default function Header({ userDetails }) {
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center gap-2">
                             <Image
-                                src="/favicon.ico"
+                                src={currentTheme === "dark" ? "/assets/vercel.svg" : "/favicon.ico"}
                                 alt="Logo"
                                 width={100}
                                 height={100}
-                                className="h-8 w-auto"
+                                className="h-8 w-auto text-white"
                             />
                         </Link>
 
