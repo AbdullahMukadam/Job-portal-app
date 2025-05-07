@@ -26,25 +26,25 @@ export default function AfterLogin({ userId }) {
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
                             <BriefcaseBusiness strokeWidth={"1px"} />
-                            <p className='text-2xl'>34 <span className='font-bold'>Jobs</span></p>
+                            <p className='text-2xl '><span className='font-bold pr-2'>41</span>Jobs</p>
 
                         </CardContent>
                     </Card>
                     <Card className="w-full p-1 flex flex-col justify-center">
-                        <h1 className="mb-2 text-[16px] pl-2">Applied Jobs</h1>
+                        <h1 className="mb-2 text-[16px] pl-2">Application Accepted</h1>
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
                             <BriefcaseBusiness strokeWidth={"1px"} />
-                            <p className='text-2xl'>34 <span className='font-bold'>Jobs</span></p>
+                            <p className='text-2xl '><span className='font-bold pr-2'>32</span>Jobs</p>
 
                         </CardContent>
                     </Card>
                     <Card className="w-full p-1 flex flex-col justify-center">
-                        <h1 className="mb-2 text-[16px] pl-2">Applied Jobs</h1>
+                        <h1 className="mb-2 text-[16px] pl-2">Application Rejected</h1>
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
                             <BriefcaseBusiness strokeWidth={"1px"} />
-                            <p className='text-2xl'>34 <span className='font-bold'>Jobs</span></p>
+                            <p className='text-2xl '><span className='font-bold pr-2'>21</span>Jobs</p>
 
                         </CardContent>
                     </Card>

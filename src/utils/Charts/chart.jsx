@@ -11,21 +11,21 @@ import {
 } from "@/components/ui/chart"
 
 const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
+    { month: "January", Accepted: 186, Rejected: 80 },
+    { month: "February", Accepted: 305, Rejected: 200 },
+    { month: "March", Accepted: 237, Rejected: 120 },
+    { month: "April", Accepted: 73, Rejected: 190 },
+    { month: "May", Accepted: 209, Rejected: 130 },
+    { month: "June", Accepted: 214, Rejected: 140 },
 ]
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
+    Accepted: {
+        label: "Accepted",
         color: "#ff6666",
     },
-    mobile: {
-        label: "Mobile",
+    Rejected: {
+        label: "Rejected",
         color: "#606060",
     },
 }
@@ -44,8 +44,8 @@ export function ChartComponent() {
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                <Bar dataKey="Accepted" fill="var(--color-Accepted)" radius={4} />
+                <Bar dataKey="Rejected" fill="var(--color-Rejected)" radius={4} />
             </BarChart>
         </ChartContainer>
     )
