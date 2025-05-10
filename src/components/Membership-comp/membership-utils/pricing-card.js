@@ -51,7 +51,7 @@ export function PricingCard({ title, description, price, features, profileDetail
                     quantity: 1
                 }],
                 email: profileDetails?.email,
-                membershipType: title 
+                membershipType: title
             });
 
             if (!mainPayment.success) {
@@ -92,8 +92,8 @@ export function PricingCard({ title, description, price, features, profileDetail
                 </h2>
                 <p className="mt-2 text-gray-700 dark:text-white">{description}</p>
                 <p className="mt-2 sm:mt-4">
-                    <strong className="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-orange-600">₹{price}</strong>
-                    <span className="text-sm font-medium text-gray-700 dark:text-white">/month</span>
+                    <strong className="text-3xl font-bold text-gray-900 sm:text-4xl dark:text-white">₹{price}</strong>
+                    <span className="text-sm font-medium text-gray-500 ">/month</span>
                 </p>
                 <Button
                     className={`mt-4 w-full ${profileDetails?.membershipType === title ? "bg-white border-2 border-blue-600 text-black" : ""}`}

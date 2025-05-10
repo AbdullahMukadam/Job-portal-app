@@ -10,7 +10,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row font-poppins">
       {/* Left side - Image with overlay text */}
       <div className="hidden lg:flex lg:w-1/2 relative text-white">
         {/* Background image - using a different image than signin for variety but maintaining brand consistency */}

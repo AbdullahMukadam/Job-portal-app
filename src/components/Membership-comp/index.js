@@ -144,7 +144,7 @@ export default function MembershipComponent({ profileDetails }) {
                 {/* Header Section */}
                 <div className='text-center mb-12'>
                     <h1 className='text-4xl font-bold text-gray-900 mb-4 dark:text-white'>Choose Your Plan</h1>
-                    <p className='text-lg text-gray-600 max-w-2xl mx-auto dark:text-orange-600'>
+                    <p className='text-lg text-gray-300 max-w-2xl mx-auto'>
                         {ProfileRole === "candidate"
                             ? "Select the perfect plan to boost your job search"
                             : "Choose the ideal plan for your recruitment needs"
@@ -154,7 +154,7 @@ export default function MembershipComponent({ profileDetails }) {
 
                 {/* Membership Control */}
                 {profileDetails?.isPremiumUser && (
-                    <div className='max-w-3xl mx-auto mb-8 p-4 bg-white dark:bg-orange-600 rounded-lg shadow-sm border border-gray-200'>
+                    <div className='max-w-3xl mx-auto mb-8 p-4 bg-white dark:bg-zinc-900 rounded-lg shadow-sm border border-gray-200'>
                         <div className='flex justify-between items-center'>
                             <div>
                                 <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>Current Plan: {profileDetails.membershipType}</h2>

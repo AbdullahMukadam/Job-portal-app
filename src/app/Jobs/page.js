@@ -9,7 +9,7 @@ export default async function JobsPage() {
     const { userId } = await auth()
 
     return (
-        <div className='w-full h-full'>
+        <div className='w-full h-full font-poppins'>
             <Suspense fallback={<SkeletonLoader />}>
                 <JobsContent userId={userId} />
             </Suspense>
