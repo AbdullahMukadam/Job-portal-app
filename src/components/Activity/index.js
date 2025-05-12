@@ -51,7 +51,7 @@ export default function ActivityComponent() {
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-poppins">
             <Tabs defaultValue="pending" className="space-y-8">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm:space-y-0">
                     <h1 className="text-3xl font-bold tracking-tight">Your Activity</h1>

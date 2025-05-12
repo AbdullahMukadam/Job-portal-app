@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Tabs,
     TabsContent,
@@ -32,7 +32,8 @@ export default function OnBoardComponent() {
     const userId = useSelector((state) => state.auth.userId)
     const { user } = useUser()
     const { toast } = useToast()
-    const SupabaseClient = createClient("https://pufnqviswcgxajjpucmr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Zm5xdmlzd2NneGFqanB1Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjczMDAsImV4cCI6MjA1MTc0MzMwMH0.h0hrZ33R2iz06Cg13NgHvmvUr8AexEeWeo_LBBNd8lk")
+    const SupabaseClient = createClient("https://eeeulgooanaescagkjrm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlZXVsZ29vYW5hZXNjYWdranJtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Njk4NDU3MiwiZXhwIjoyMDYyNTYwNTcyfQ.ByqJbxrrzESIPua9zljiSaPj2lBC56oSBsYtXSbnL58")
+
 
 
     const RecruiterDetails = async (data) => {
@@ -141,7 +142,7 @@ export default function OnBoardComponent() {
     }
 
     return (
-        <div className='w-full h-full p-2'>
+        <div className='w-full h-full p-2 font-poppins '>
             <Tabs defaultValue='candidate'>
                 <div className='w-full p-1 flex items-center justify-between'>
                     <h1 className='font-semibold text-sm md:text-xl md:font-bold md:w-full'>Welcome to onBoard Page, Please Fill the details</h1>
@@ -150,8 +151,8 @@ export default function OnBoardComponent() {
                         <TabsTrigger value="recruiter">Recruiter</TabsTrigger>
                     </TabsList>
                 </div>
-                <div className='w-full p-2'>
-                    <TabsContent value="candidate">
+                <div className='w-full p-2 lg:flex items-center justify-center'>
+                    <TabsContent value="candidate" className="lg:w-[70%]">
                         <form onSubmit={handleSubmitCandidate(CandidateSubmit)}>
                             <Card>
 
@@ -353,7 +354,7 @@ export default function OnBoardComponent() {
 
                         </form>
                     </TabsContent>
-                    <TabsContent value="recruiter">
+                    <TabsContent value="recruiter" className="lg:w-[70%]">
                         <form onSubmit={handleSubmitRecruiter(RecruiterDetails)}>
                             <Card>
                                 <CardHeader>

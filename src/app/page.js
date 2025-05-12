@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { ArrowRight, Bell, Briefcase, BookOpen, BarChart2, ChevronRight, Search, LayoutDashboard, FileText, BookOpen as BookIcon } from 'lucide-react';
+import { fetchJobPostForCandidate, fetchJobPostForRecruiter } from './actions/jobsActions';
 
 export default async function Home() {
   const { userId } = await auth();
@@ -24,14 +25,15 @@ export default async function Home() {
   if (userId) {
     const user = await currentUser();
     const profileDetails = await fetchUserDetails(userId);
+    const Alljobs = profileDetails?.role === "candidate" ? await fetchJobPostForCandidate() : await fetchJobPostForRecruiter(userId)
 
     if (user && !profileDetails?._id) {
       redirect("/onBoard");
-    } else if (user && profileDetails?._id) {
+    } else if (user && profileDetails?._id && Alljobs) {
       return (
         <div className="min-h-screen dark:bg-zinc-950 bg-gray-50">
           <div className="mt-2 p-4 bg-white dark:bg-zinc-950 rounded-lg shadow-sm">
-            <AfterLogin userId={userId} />
+            <AfterLogin userId={userId} profileDetails={profileDetails} Alljobs={Alljobs.jobs} />
           </div>
         </div >
       );
@@ -45,7 +47,7 @@ export default async function Home() {
           <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
             <div>
               <div className="text-center lg:text-left">
-                <h1 className="text-4xl font-bold leading-tight text-gray-900 dark:text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl font-pj">
+                <h1 className="text-4xl font-bold leading-tight text-gray-900 dark:text-white sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl font-poppins">
                   Find Your Dream Job Build Your Future.
                 </h1>
                 <p className="mt-2 text-lg text-gray-600 dark:text-white sm:mt-8 font-inter">

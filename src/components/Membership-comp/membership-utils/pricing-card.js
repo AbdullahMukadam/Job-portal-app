@@ -19,9 +19,6 @@ export function PricingCard({ title, description, price, features, profileDetail
     const { toast } = useToast()
 
 
-
-    //console.log(profileDetails)
-
     const handlePayment = async () => {
         try {
             settypeMembership(title)
