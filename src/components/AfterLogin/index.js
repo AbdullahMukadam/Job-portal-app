@@ -13,7 +13,9 @@ import { fetchJobPostForCandidate } from '@/app/actions/jobsActions'
 export default function AfterLogin({ userId, Alljobs, profileDetails }) {
     const dispatch = useDispatch()
     const jobs = useSelector((state) => state.job.jobs)
+    const role = profileDetails?.role === "candidate" ? "candidate" : "recruiter"
     const [userApplications, setuserApplications] = useState([])
+    const [jobsArrayforTable, setjobsArrayforTable] = useState(null)
     const [userJobHistory, setuserJobHistory] = useState({
         totalAppliedJobs: 0,
         totalAcceptedJobs: 0,
@@ -33,7 +35,7 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
 
     const getUserData = useCallback(async () => {
 
-        if (Alljobs && profileDetails?.role === "candidate") {
+        if (Alljobs && role === "candidate") {
             const userApps = Alljobs.reduce((acc, job) => {
                 const matchingApplicants = job.applicants
                     .filter(applicant => applicant.applicantData.userId === userId)
@@ -61,7 +63,7 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
     }, [userId])
 
     const calculateJobsInfo = useCallback(() => {
-        if (profileDetails?.role === "candidate") {
+        if (role === "candidate") {
             const totalAppliedJobs = userApplications.length
             const totalAcceptedJobs = userApplications.filter((job) => job.applicantData.status[0] === "accepted").length
             const totalRejectedJobs = userApplications.filter((job) => job.applicantData.status[0] === "rejected").length
@@ -82,13 +84,22 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
                 totalApplicants: totalApplicants
             }))
         }
-    }, [profileDetails?.role, userApplications])
+    }, [role, userApplications])
+
+    const JobsArrayForTable = useCallback(() => {
+        if (role === "candidate") {
+            console.log(userApplications)
+        } else {
+            console.log(userApplications)
+        }
+    }, [])
 
     useEffect(() => {
         if (userApplications) {
             calculateJobsInfo()
+            JobsArrayForTable()
         }
-    }, [calculateJobsInfo, userApplications])
+    }, [calculateJobsInfo, userApplications, JobsArrayForTable])
 
 
     return (
@@ -97,23 +108,23 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
                 <h1 className={`font-poppins font-bold mb-3`}>DashBoard</h1>
                 <div className='w-full flex flex-col gap-2 lg:flex-row'>
                     <Card className="w-full p-1 flex flex-col justify-center">
-                        <h1 className="mb-2 text-[16px] pl-2">{profileDetails?.role === "candidate" ? "Applied Jobs" : "Jobs Posted"}</h1>
+                        <h1 className="mb-2 text-[16px] pl-2">{role === "candidate" ? "Applied Jobs" : "Jobs Posted"}</h1>
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
                             <BriefcaseBusiness strokeWidth={"1px"} />
-                            <p className='text-2xl '><span className='font-bold pr-2'>{profileDetails?.role === "candidate" ? userJobHistory.totalAppliedJobs.toString() || "0" : recruiterJobHistory.totaljobsPosted.toString() || "0"}</span>Jobs</p>
+                            <p className='text-2xl '><span className='font-bold pr-2'>{role === "candidate" ? userJobHistory.totalAppliedJobs.toString() || "0" : recruiterJobHistory.totaljobsPosted.toString() || "0"}</span>Jobs</p>
                         </CardContent>
                     </Card>
                     <Card className="w-full p-1 flex flex-col justify-center">
-                        <h1 className="mb-2 text-[16px] pl-2">{profileDetails?.role === "candidate" ? "Application Accepted" : "Total Applicants"}</h1>
+                        <h1 className="mb-2 text-[16px] pl-2">{role === "candidate" ? "Application Accepted" : "Total Applicants"}</h1>
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
                             <BriefcaseBusiness strokeWidth={"1px"} />
-                            <p className='text-2xl '><span className='font-bold pr-2'>{profileDetails?.role === "candidate" ? userJobHistory.totalAcceptedJobs.toString() || "0" : recruiterJobHistory.totalApplicants.toString() || "0"}</span>Jobs</p>
+                            <p className='text-2xl '><span className='font-bold pr-2'>{role === "candidate" ? userJobHistory.totalAcceptedJobs.toString() || "0" : recruiterJobHistory.totalApplicants.toString() || "0"}</span>Jobs</p>
 
                         </CardContent>
                     </Card>
-                    {profileDetails?.role === "candidate" && <Card className="w-full p-1 flex flex-col justify-center">
+                    {role === "candidate" && <Card className="w-full p-1 flex flex-col justify-center">
                         <h1 className="mb-2 text-[16px] pl-2">Application Rejected</h1>
                         <hr />
                         <CardContent className="w-full flex mt-2 items-center gap-2 ">
@@ -126,11 +137,21 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
                 <div className='w-full lg:flex items-center justify-center gap-2'>
                     <Card className='w-full mt-2 lg:w-[50%] p-2'>
                         <CardTitle className="pl-2">Overview</CardTitle>
-                        <ChartComponent />
+                        <ChartComponent
+                            totaljobsPosted={recruiterJobHistory?.totaljobsPosted || "0"}
+                            totalApplicants={recruiterJobHistory?.totalApplicants || "0"}
+
+                            role={role}
+                            totalAppliedJobs={userJobHistory?.totalAppliedJobs || "0"}
+                            totalAcceptedJobs={userJobHistory?.totalAcceptedJobs || "0"}
+                            totalRejectedJobs={userJobHistory?.totalRejectedJobs || "0"}
+                        />
                     </Card>
                     <Card className='w-full mt-2 lg:w-[45%] p-2'>
                         <CardTitle className="pl-2">History</CardTitle>
-                        <TableComponent />
+                        <TableComponent
+                            role={role}
+                        />
                     </Card>
                 </div>
 

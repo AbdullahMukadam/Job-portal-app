@@ -1,52 +1,115 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-
+import * as React from "react"
+import { Label, Pie, PieChart } from "recharts"
 import {
+    ChartConfig,
     ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
 
-const chartData = [
-    { month: "January", Accepted: 186, Rejected: 80 },
-    { month: "February", Accepted: 305, Rejected: 200 },
-    { month: "March", Accepted: 237, Rejected: 120 },
-    { month: "April", Accepted: 73, Rejected: 190 },
-    { month: "May", Accepted: 209, Rejected: 130 },
-    { month: "June", Accepted: 214, Rejected: 140 },
-]
+export function ChartComponent({
+    totaljobsPosted,
+    totalApplicants,
+    role,
+    totalAppliedJobs,
+    totalAcceptedJobs,
+    totalRejectedJobs
+}) {
+    // Define chart data based on user role
+    const chartData = React.useMemo(() => {
+        if (role === "candidate") {
+            return [
+                { jobs: "Applied-Jobs", value: parseInt(totalAppliedJobs || 0), fill: "hsl(var(--chart-1))" },
+                { jobs: "Accepted-Jobs", value: parseInt(totalAcceptedJobs || 0), fill: "hsl(var(--chart-2))" },
+                { jobs: "Rejected-Jobs", value: parseInt(totalRejectedJobs || 0), fill: "hsl(var(--chart-3))" },
+            ]
+        } else {
+            return [
+                { jobs: "Jobs-Posted", value: parseInt(totaljobsPosted || 0), fill: "hsl(var(--chart-1))" },
+                { jobs: "Total-Applicants ", value: parseInt(totalApplicants || 0), fill: "hsl(var(--chart-2))" },
+            ]
+        }
+    }, [role, totalAppliedJobs, totalAcceptedJobs, totalRejectedJobs, totaljobsPosted, totalApplicants]);
 
-const chartConfig = {
-    Accepted: {
-        label: "Accepted",
-        color: "#ff6666",
-    },
-    Rejected: {
-        label: "Rejected",
-        color: "#606060",
-    },
-}
+    // Chart configuration
+    const chartConfig = {
+        chrome: {
+            label: "Applied Jobs",
+            color: "hsl(var(--chart-1))",
+        },
+        safari: {
+            label: "Accepted Jobs",
+            color: "hsl(var(--chart-2))",
+        },
+        firefox: {
+            label: "Rejected Jobs",
+            color: "hsl(var(--chart-3))",
+        },
+        edge: {
+            label: "Jobs Posted",
+            color: "hsl(var(--chart-1))",
+        },
+        other: {
+            label: "Total Applicants",
+            color: "hsl(var(--chart-2))",
+        },
+    }
 
-export function ChartComponent() {
     return (
-        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-            <BarChart accessibilityLayer data={chartData}>
-                <CartesianGrid vertical={false} />
-                <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+        <ChartContainer
+            config={chartConfig}
+            className="mx-auto h-52 max-h-[200px]"
+        >
+            <PieChart>
+                <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
                 />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="Accepted" fill="var(--color-Accepted)" radius={4} />
-                <Bar dataKey="Rejected" fill="var(--color-Rejected)" radius={4} />
-            </BarChart>
+                <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="jobs"
+                    innerRadius={60}
+                    strokeWidth={5}
+                >
+                    <Label
+                        content={({ viewBox }) => {
+                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                return (
+                                    <text
+                                        x={viewBox.cx}
+                                        y={viewBox.cy}
+                                        textAnchor="middle"
+                                        dominantBaseline="middle"
+                                    >
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={viewBox.cy}
+                                            fill="currentColor"
+                                            fontSize="24px"
+                                            fontWeight="bold"
+                                            className="dark:fill-white"
+                                        >
+                                            {role === "candidate" ? totalAppliedJobs : totaljobsPosted}
+                                        </tspan>
+                                        <tspan
+                                            x={viewBox.cx}
+                                            y={(viewBox.cy || 0) + 24}
+                                            fill="#64748b" /* Default muted text color */
+                                            fontSize="12px"
+                                            className="dark:fill-white"
+                                        >
+                                            {role === "candidate" ? "Jobs Applied" : "Jobs Posted"}
+                                        </tspan>
+                                    </text>
+                                )
+                            }
+                        }}
+                    />
+                </Pie>
+            </PieChart>
         </ChartContainer>
     )
 }

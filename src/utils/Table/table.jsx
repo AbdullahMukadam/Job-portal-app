@@ -48,16 +48,18 @@ const invoices = [
     },
 ]
 
-export function TableComponent() {
+export function TableComponent({
+    role
+}) {
     return (
         <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableCaption>{role === "candidate" ? "A List of Applied Jobs" : "A List of Posted Jobs"}.</TableCaption>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">Invoice</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="w-[100px]">Job Id</TableHead>
+                    <TableHead>Tittle</TableHead>
+                    <TableHead>Company Name</TableHead>
+                    <TableHead className="text-right">Type</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
