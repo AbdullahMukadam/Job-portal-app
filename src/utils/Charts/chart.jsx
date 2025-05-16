@@ -15,15 +15,16 @@ export function ChartComponent({
     role,
     totalAppliedJobs,
     totalAcceptedJobs,
-    totalRejectedJobs
+    totalRejectedJobs,
+    hasApplied
 }) {
-    // Define chart data based on user role
+
     const chartData = React.useMemo(() => {
         if (role === "candidate") {
             return [
-                { jobs: "Applied-Jobs", value: parseInt(totalAppliedJobs || 0), fill: "hsl(var(--chart-1))" },
-                { jobs: "Accepted-Jobs", value: parseInt(totalAcceptedJobs || 0), fill: "hsl(var(--chart-2))" },
-                { jobs: "Rejected-Jobs", value: parseInt(totalRejectedJobs || 0), fill: "hsl(var(--chart-3))" },
+                { jobs: "Applied-Jobs", value: parseInt(totalAppliedJobs) || 0, fill: "hsl(var(--chart-1))" },
+                { jobs: "Accepted-Jobs", value: parseInt(totalAcceptedJobs) || 0, fill: "hsl(var(--chart-2))" },
+                { jobs: "Rejected-Jobs", value: parseInt(totalRejectedJobs) || 0, fill: "hsl(var(--chart-3))" },
             ]
         } else {
             return [
@@ -55,6 +56,12 @@ export function ChartComponent({
             label: "Total Applicants",
             color: "hsl(var(--chart-2))",
         },
+    }
+
+    if(!hasApplied){
+        return (
+            <h1 className="text-xl text-red-500 mt-2">No Availaible Data to show , Please Apply to Some Jobs or Add Some Jobs.</h1>
+        )
     }
 
     return (
@@ -92,7 +99,7 @@ export function ChartComponent({
                                             fontWeight="bold"
                                             className="dark:fill-white"
                                         >
-                                            {role === "candidate" ? totalAppliedJobs : totaljobsPosted}
+                                            {role === "candidate" ? totalAppliedJobs || 0 : totaljobsPosted || 0}
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}

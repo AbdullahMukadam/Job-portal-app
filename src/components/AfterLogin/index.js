@@ -15,7 +15,7 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
     const jobs = useSelector((state) => state.job.jobs)
     const role = profileDetails?.role === "candidate" ? "candidate" : "recruiter"
     const [userApplications, setuserApplications] = useState([])
-    const [jobsArrayforTable, setjobsArrayforTable] = useState(null)
+    const [jobsArrayforTable, setjobsArrayforTable] = useState([])
     const [userJobHistory, setuserJobHistory] = useState({
         totalAppliedJobs: 0,
         totalAcceptedJobs: 0,
@@ -83,23 +83,41 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
                 totaljobsPosted: totaljobsPosted,
                 totalApplicants: totalApplicants
             }))
+
         }
     }, [role, userApplications])
 
-    const JobsArrayForTable = useCallback(() => {
+    const calculateJobsArrayForTable = useCallback(() => {
         if (role === "candidate") {
-            console.log(userApplications)
+            // console.log(userApplications)
+            const data = userApplications?.map((job) => {
+                return {
+                    jobId: job.jobId,
+                    jobTitle: job.jobTitle,
+                    companyName: job.companyName,
+                    jobType: job.jobType
+                }
+            })
+            setjobsArrayforTable(data)
         } else {
-            console.log(userApplications)
+            const data = userApplications?.map((job) => {
+                return {
+                    jobId: job._id,
+                    jobTitle: job.title,
+                    companyName: job.CompanyName,
+                    jobType: job.type
+                }
+            })
+            setjobsArrayforTable(data)
         }
-    }, [])
+    }, [role, userApplications])
 
     useEffect(() => {
         if (userApplications) {
             calculateJobsInfo()
-            JobsArrayForTable()
+            calculateJobsArrayForTable()
         }
-    }, [calculateJobsInfo, userApplications, JobsArrayForTable])
+    }, [calculateJobsInfo, userApplications, calculateJobsArrayForTable])
 
 
     return (
@@ -138,19 +156,21 @@ export default function AfterLogin({ userId, Alljobs, profileDetails }) {
                     <Card className='w-full mt-2 lg:w-[50%] p-2'>
                         <CardTitle className="pl-2">Overview</CardTitle>
                         <ChartComponent
-                            totaljobsPosted={recruiterJobHistory?.totaljobsPosted || "0"}
-                            totalApplicants={recruiterJobHistory?.totalApplicants || "0"}
-
+                            totaljobsPosted={recruiterJobHistory?.totaljobsPosted || 0}
+                            totalApplicants={recruiterJobHistory?.totalApplicants || 0}
+                            hasApplied={userApplications?.length > 0 ? true : false}
                             role={role}
-                            totalAppliedJobs={userJobHistory?.totalAppliedJobs || "0"}
-                            totalAcceptedJobs={userJobHistory?.totalAcceptedJobs || "0"}
-                            totalRejectedJobs={userJobHistory?.totalRejectedJobs || "0"}
+                            totalAppliedJobs={userJobHistory?.totalAppliedJobs || 0}
+                            totalAcceptedJobs={userJobHistory?.totalAcceptedJobs || 0}
+                            totalRejectedJobs={userJobHistory?.totalRejectedJobs || 0}
                         />
                     </Card>
                     <Card className='w-full mt-2 lg:w-[45%] p-2'>
                         <CardTitle className="pl-2">History</CardTitle>
                         <TableComponent
                             role={role}
+                            hasApplied={userApplications?.length > 0 ? true : false}
+                            jobsData={jobsArrayforTable}
                         />
                     </Card>
                 </div>
