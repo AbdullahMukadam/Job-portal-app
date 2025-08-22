@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
             enableSystem
           >
             <div className="min-h-screen flex flex-col items-center">
-              <main className="w-full max-w-7xl mx-auto">
+              <main className="w-full max-w-[90rem] mx-auto">
                 <Suspense fallback={<SkeletonDemo />}>
                   <CommonLayout>
                     {children}

@@ -5,9 +5,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { GraduationCap, Briefcase, MapPin, Mail, Github, Linkedin } from 'lucide-react'
 import { Button } from '../ui/button'
-import { createClient } from '@supabase/supabase-js'
 import { useSelector } from 'react-redux'
 import { AlertDialogDemo } from '@/utils/Alert-Dialog/Alert-Dialog'
+import { toast } from '@/hooks/use-toast'
 
 export default function ProfileComponent({ ProfileInfo }) {
   const { CandidateInfo, email, membershipType } = ProfileInfo
@@ -17,7 +17,7 @@ export default function ProfileComponent({ ProfileInfo }) {
   const [applicantStatus, setApplicantStatus] = useState("")
   const jobs = useSelector((state) => state.job.jobs)
   const job = useSelector((state) => state.job.SingleJob)
-  const SupabaseClient = createClient("https://pufnqviswcgxajjpucmr.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Zm5xdmlzd2NneGFqanB1Y21yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNjczMDAsImV4cCI6MjA1MTc0MzMwMH0.h0hrZ33R2iz06Cg13NgHvmvUr8AexEeWeo_LBBNd8lk")
+
 
   useEffect(() => {
     if (jobs) {
@@ -39,8 +39,14 @@ export default function ProfileComponent({ ProfileInfo }) {
   }, [job, ProfileInfo?.userId])
 
   const handleResumeView = async () => {
-    const response = await SupabaseClient.storage.from("job-board-public").getPublicUrl(CandidateInfo.resume).data
-    window.open(`${response.publicUrl}`)
+    if(!CandidateInfo.resume.includes("vercel")){
+      toast({
+        title: "Resume is been Deleted",
+        description: "Please contact the candidate using gmail"
+    })
+    }else {
+      window.open(`${CandidateInfo.resume}`)
+    }
   }
 
   const handleSelectforJob = () => {

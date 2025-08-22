@@ -23,7 +23,7 @@ import { submitCandidateDetails, submitRecruiterDetails } from '@/app/actions/de
 import { useSelector } from 'react-redux'
 import { useUser } from '@clerk/nextjs'
 import { Toaster } from '../ui/toaster'
-import { createClient } from '@supabase/supabase-js'
+import { hndleUploadResume } from '@/app/actions/fileUploadAction'
 
 export default function OnBoardComponent() {
     const { register: registerCandidate, handleSubmit: handleSubmitCandidate, reset: resetCandidate, formState: { isSubmitting: isSubmittingCandidate, errors: errorsCandidate } } = useForm()
@@ -32,8 +32,6 @@ export default function OnBoardComponent() {
     const userId = useSelector((state) => state.auth.userId)
     const { user } = useUser()
     const { toast } = useToast()
-    const SupabaseClient = createClient("https://eeeulgooanaescagkjrm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlZXVsZ29vYW5hZXNjYWdranJtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0Njk4NDU3MiwiZXhwIjoyMDYyNTYwNTcyfQ.ByqJbxrrzESIPua9zljiSaPj2lBC56oSBsYtXSbnL58")
-
 
 
     const RecruiterDetails = async (data) => {
@@ -67,32 +65,42 @@ export default function OnBoardComponent() {
         }
     }
 
-    const UploadFileToSupabase = async (file) => {
-        const { data, error } = await SupabaseClient.storage.from("job-board-public").upload(`/public/${file.name}`, file, {
-            cacheControl: "3600",
-            upsert: false
-        })
-        if (error) {
-            console.log("Error in File Uploading", error)
-        } else {
-            return data.path
-        }
-    }
-
-    const DeleteFileFromSupabase = async (file) => {
+    const UploadFileToVercelBlob = async (file) => {
         try {
-            await SupabaseClient.storage.from("job-board-public").remove(`/public/${file.name}`)
+            const uploadedFileUrl = await hndleUploadResume(file)
+            if (uploadedFileUrl) {
+                return uploadedFileUrl
+            }
         } catch (error) {
-            console.log("Error in Deleting File", error)
+            console.log("Error in File Uploading", error)
         }
 
+
+        // const { data, error } = await SupabaseClient.storage.from("job-board-public").upload(`/public/${file.name}`, file, {
+        //     cacheControl: "3600",
+        //     upsert: false
+        // })
+        // if (error) {
+        //     console.log("Error in File Uploading", error)
+        // } else {
+        //     return data.path
+        // }
     }
+
+    // const DeleteFileFromSupabase = async (file) => {
+    //     try {
+    //         await SupabaseClient.storage.from("job-board-public").remove(`/public/${file.name}`)
+    //     } catch (error) {
+    //         console.log("Error in Deleting File", error)
+    //     }
+
+    // }
 
     const CandidateSubmit = async (data) => {
         try {
             setErrors("")
             //console.log(data.resume[0])
-            const filePath = await UploadFileToSupabase(data.resume[0])
+            const filePath = await UploadFileToVercelBlob(data.resume[0])
             if (filePath) {
                 console.log(filePath)
                 const formData = {
@@ -132,7 +140,7 @@ export default function OnBoardComponent() {
             }
 
         } catch (error) {
-            await DeleteFileFromSupabase(data.resume[0])
+            // await DeleteFileFromSupabase(data.resume[0])
             toast({
                 title: "Error",
                 description: "An Error occurred in sending details"
@@ -159,7 +167,7 @@ export default function OnBoardComponent() {
                                 <CardHeader>
                                     <CardTitle>Details</CardTitle>
                                     <CardDescription>
-                                        Make changes to your account here. Click save when you're done.
+                                        Make changes to your account here. Click save when youre done.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-2">
